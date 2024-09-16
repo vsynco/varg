@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageTube Mejorado</title>
+    <style>
+        :root {
+            --background-color: #101012;
+            --card-background: #1a1a1a;
+            --text-color: #e0e0e0;
+            --accent-color: #8e7752;
+            --user-name-color: #8e7754;
+            --search-text-color: #a0a0a0;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--background-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .search-bar input {
+            padding: 8px 15px;
+            width: 300px;
+            background-color: var(--card-background);
+            border: 1px solid var(--accent-color);
+            color: var(--search-text-color);
+            font-size: 14px;
+        }
+
+        .user-icon {
+            color: var(--accent-color);
+            font-size: 24px;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            background-color: var(--card-background);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .image-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .image-container {
+            position: relative;
+            border: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .image-container:hover {
+            border-color: var(--accent-color);
+        }
+
+        .image-card img.main-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-top: -30px;
+            margin-left: 4px;
+        }
+
+        .user-name {
+            color: var(--user-name-color);
+            font-size: 14px;
+        }
+
+        .image-info {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .image-views {
+            color: var(--text-color);
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .search-bar input {
+                width: 200px;
+            }
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ImageTube</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar">
+        </div>
+        <div class="user-icon">👤</div>
+    </header>
+
+    <main>
+        <div class="tags">
+            <span class="tag">Tendencias</span>
+            <span class="tag">Naturaleza</span>
+            <span class="tag">Arte</span>
+            <span class="tag">Tecnología</span>
+            <span class="tag">Viajes</span>
+            <span class="tag">Comida</span>
+        </div>
+
+        <div class="image-grid">
+            
+            
+            <div class="image-card image-container">
+                <div>
+                    <img class="main-image" src="/static/imagenes/only/1.jpg" alt="Imagen 1">
+                </div>
+                <div class="image-info">
+                    <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                    <span class="image-views">ArtisticSoul</span>
+                </div>
+            </div>
+
+            <div class="image-card image-container">
+                <div>
+                    <img class="main-image" src="/static/imagenes/only/2.jpg" alt="Imagen 1">
+                </div>
+                <div class="image-info">
+                    <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                    <span class="image-views">ArtisticSoul</span>
+                </div>
+            </div>
+
+            <div class="image-card image-container">
+                <div>
+                    <img class="main-image" src="/static/imagenes/only/3.jpg" alt="Imagen 1">
+                </div>
+                <div class="image-info">
+                    <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                    <span class="image-views">ArtisticSoul</span>
+                </div>
+            </div>
+
+
+            <div class="image-card image-container">
+                <div>
+                    <img class="main-image" src="/static/imagenes/only/4.jpg" alt="Imagen 1">
+                </div>
+                <div class="image-info">
+                    <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                    <span class="image-views">ArtisticSoul</span>
+                </div>
+            </div>
+
+
+            <div class="image-card image-container">
+            <div>
+                <img class="main-image" src="/static/imagenes/only/8.jpg" alt="Imagen 1">
+            </div>
+            <div class="image-info">
+                <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                <span class="image-views">ArtisticSoul</span>
+            </div>
+        </div>
+
+
+        <div class="image-card image-container">
+            <div>
+                <img class="main-image" src="/static/imagenes/only/5.jpg" alt="Imagen 1">
+            </div>
+            <div class="image-info">
+                <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                <span class="image-views">ArtisticSoul</span>
+            </div>
+        </div>
+
+
+        <div class="image-card image-container">
+            <div>
+                <img class="main-image" src="/static/imagenes/only/6.jpg" alt="Imagen 1">
+            </div>
+            <div class="image-info">
+                <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                <span class="image-views">ArtisticSoul</span>
+            </div>
+        </div>
+
+
+
+        <div class="image-card image-container">
+            <div>
+                <img class="main-image" src="/static/imagenes/only/7.jpg" alt="Imagen 1">
+            </div>
+            <div class="image-info">
+                <img class="user-avatar" src="/static/imagenes/only/foto.png" alt="Usuario 1">
+                <span class="image-views">ArtisticSoul</span>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        </div>
+    </main>
+</body>
+</html>

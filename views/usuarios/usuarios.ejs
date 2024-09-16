@@ -1,0 +1,97 @@
+<%- include('../header.ejs') %>
+
+
+
+
+     
+<section class="py-8">
+  <div class="container px-4 mx-auto">
+    <div class="pt-4 bg-white shadow rounded">
+      <div class="flex px-6 pb-4 border-b">
+        <h3 class="text-xl font-bold">Usuarios</h3>
+      </div>
+      <div class="p-4 overflow-x-auto">
+        <table class="table-auto w-full">
+          <thead>
+            <tr class="text-stone-600 text-left"><th class="pb-3 font-medium">ID</th><th class="pb-3 font-medium">Foto</th><th class="pb-3 font-medium">Nombre</th><th class="pb-3 font-medium">Correo Electrónico</th><th class="pb-3 font-medium">Teléfono</th><th class="pb-3 font-medium">Fecha de Registro</th></tr>
+          </thead>
+          <tbody>
+
+
+
+
+
+
+
+
+
+
+          <% usuarios.forEach(function(usuario) { %>
+            <tr>
+              <td class="py-5 px-6 font-medium"><a href="/usuarios/<%= usuario.id %>"><%= usuario.id %></a></td>
+              <td class="font-medium">
+                <figure class="w-7 h-7 rounded-full overflow-hidden">
+                  <img src="<%= usuario.foto_perfil || '/static/imagenes/robot.png' %>" alt="Foto de perfil" class="w-full h-full object-cover">
+                </figure></td>
+              <td class="font-medium"><%= usuario.nombre %></td>
+              <td class="font-medium"><%= usuario.email %></td>
+              <td class="font-medium">
+                <% 
+// Eliminar espacios y símbolos del número de teléfono
+let telefonoLimpiado = usuario.telefono.replace(/[^\d]/g, '');
+
+let telefonoFormateado = telefonoLimpiado;
+
+if (telefonoFormateado.length === 9) {
+    telefonoFormateado = '+56' + telefonoFormateado;
+} else if (telefonoFormateado.length === 11 && !telefonoFormateado.startsWith('+')) {
+    telefonoFormateado = '+' + telefonoFormateado;
+} else if (telefonoFormateado.length === 8) {
+    telefonoFormateado = '+569' + telefonoFormateado;
+}
+%><br>
+                <%= usuario.telefono %><br>
+                
+                <a href="https://api.whatsapp.com/send?phone=<%= telefonoFormateado %>&text=Hola!, soy Juan Pablo Vargas, Abogado.%0A%0AGracias por unirte a Asamblea.cl ⭐ puedes recibir notificaciones de nuevas clases, documentos subidos o preguntas frecuentes en el siguiente grupo de whatsapp (sólo notificaciones) %0A%0Ahttps://chat.whatsapp.com/CuzELSVwBhRDRmWFF0DHRW %0A%0ATe aprovecho de comentar que reactivamos nuestros servicios legales para miscondominios/administradores y estoy disponible como contacto comercial para cualquier requerimiento que tengas (soporte legal, cobranzas, modificaciones de reglamento, causas judiciales y otros). Quedo atento, saludos!!" target="_blank"><%= telefonoFormateado %></a>
+                
+              </td>
+              <td class="font-medium"><%= new Date(usuario.creacion).toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) %></td>
+            </tr>
+            <% }); %>
+
+          </tbody>
+        </table>
+        <div class="text-center mt-5">
+            
+
+            <div class="flex justify-center space-x-2 pb-5">
+              <% if (totalPages > 1) { %>
+                <% if (currentPage > 1) { %>
+                  <a class="px-3 py-1 bg-stone-200 hover:bg-stone-400 rounded-md" href="/usuarios?page=1">Primera</a>
+                <% } %>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                  <a class="px-3 py-1 <% if (i === currentPage) { %>bg-stone-500 text-white<% } else { %>bg-stone-200 hover:bg-stone-400<% } %> rounded-md" href="/usuarios?page=<%= i %>"><%= i %></a>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                  <a class="px-3 py-1 bg-stone-200 hover:bg-stone-400 rounded-md" href="/usuarios?page=<%= totalPages %>">Última</a>
+                <% } %>
+              <% } %>
+            </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+          
+
+
+
+
+
+
+
+
+
+<%- include('../footer.ejs') %>

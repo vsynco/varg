@@ -1,0 +1,112 @@
+<%- include('../header.ejs') %>
+
+<div class="columns">
+  <div class="column is-flex-grow-1">
+    <a href="/" class="colored"><i class="fa-solid fa-house is-size-6"></i></a>
+    <i class="fa-solid fa-angle-right colored mx-2 is-size-6"></i>
+    <a href="/usuarios/"><span class="has-text-weight-semibold colored is-size-5">Usuarios</span></a>
+    <i class="fa-solid fa-angle-right colored mx-2 is-size-6"></i>
+    <span class="is-size-5"><%= usuario.nombre %></span>
+  </div>
+  <div class="column is-narrow">
+    <a class="button is-small is-grey-light is-outlined" href="/usuarios/editar/<%= usuario.id %>"><i class="fas fa-plus mr-2 mt-1"></i> Editar Usuario</a>
+  </div>
+</div>
+
+
+
+
+  <div class="card mt-2">
+    <div class="card-content px-5 py-5">
+      <div class="is-flex is-align-center mb-3">
+        <figure class="image is-64x64">
+          <img
+            src="<%= usuario.foto_perfil || '/static/imagenes/robot.png' %>"
+            alt="Foto de perfil" class="is-rounded" />
+        </figure>
+      </div>
+      <div style="position: relative; top: -78px; left: 80px; margin-bottom: -78px">
+        <p><strong>Id: </strong>
+          <%= usuario.nombre %>
+        </p>
+        <p><strong>Nombre: </strong>
+          <%= usuario.nombre %>
+        </p>
+        <p><strong>Correo: </strong>
+          <%= usuario.email %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+
+      <!-- Estilos CSS directamente en el código -->
+      <style>
+        .media-container {
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          height: 160px;
+          /* Ajusta según tus necesidades */
+        }
+
+        .media-image {
+          width: 100%;
+          height: 160px;
+          object-fit: cover;
+        }
+      </style>
+
+
+
+
+<% if (nextPageToken) { %>
+  <div class="pagination mt-5">
+  <a class="pagination-previous" href="/usuarios/<%= usuario.id %>?pageToken=<%= nextPageToken %>">Siguiente</a>
+  </div>
+<% } %>
+
+
+<div class="columns mt-5 is-multiline px-3">
+        <% if (mediaItems && mediaItems.length> 0) {
+          // Ordena los mediaItems por fecha (creationTime)
+          mediaItems.sort((a, b) => {
+          const dateA = new Date(a.mediaMetadata.creationTime);
+          const dateB = new Date(b.mediaMetadata.creationTime);
+          return dateB - dateA; // Ordena en orden descendente (más reciente primero)
+          });
+
+          mediaItems.forEach((mediaItem) => { %>
+          
+            <div class="column is-2 px-0 py-0">
+              <% if (mediaItem.esVideo) { %>
+                <a class="media-image" href="<%= mediaItem.downloadUrl %>" download style="display: block; height: 140px; overflow: hidden;">
+                <img src="<%= mediaItem.baseUrl %>" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;" /></a>
+              <% } else { %>
+                <a class="media-image" href="<%= mediaItem.maxQualityUrl %>" download style="display: block; height: 140px; overflow: hidden;">
+                <img src="<%= mediaItem.baseUrl %>" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;" />
+                </a>
+              <% } %>
+              <span><%= new Intl.DateTimeFormat('es-ES', { day: '2-digit' , month: '2-digit' , year: 'numeric' }).format(new Date(mediaItem.mediaMetadata.creationTime)) %></span>
+          </div>
+          
+
+          <% }); } else { %>
+        
+            <p>No hay medios disponibles.</p>
+            
+          <% } %>
+
+        </div>
+
+
+
+<% if (nextPageToken) { %>
+<div class="pagination mt-5">
+<a class="pagination-previous" href="/usuarios/<%= usuario.id %>?pageToken=<%= nextPageToken %>">Siguiente</a>
+</div>
+<% } %>
+  
+
+<%- include('../footer.ejs') %>

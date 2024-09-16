@@ -1,0 +1,66 @@
+<%- include('../header.ejs') %>
+
+
+
+
+<div class="columns">
+  <div class="column is-flex-grow-1">
+    <a href="/usuarios/" class="colored"><i class="fa-solid fa-house is-size-6"></i></a>
+    <i class="fa-solid fa-angle-right colored mx-2 is-size-6"></i>
+    <a href="/usuarios/"><span class="has-text-weight-semibold colored is-size-5">Usuarios</span></a>
+    <i class="fa-solid fa-angle-right colored mx-2 is-size-6"></i>
+    <a href="/usuarios/<%= usuario.id %>/"><span class="has-text-weight-semibold colored is-size-5"><%= usuario.nombre %></span></a>
+    <i class="fa-solid fa-angle-right colored mx-2 is-size-6"></i>
+    <span class="is-size-5">Editar</span>
+  </div>
+    <div class="column is-narrow">
+      <a class="button is-small is-grey-light is-outlined" href="/usuarios/eliminar/<%= usuario.id %>"><i class="fas fa-plus mr-2 mt-1"></i> Eliminar Usuario</a>
+    </div>
+  </div>
+
+
+    <form action="/usuarios/editar/<%= usuario.id %>" method="POST" onsubmit="Boton.disabled = true;">
+      <input type="hidden" name="id" value="<%= usuario.id %>" />
+
+      <div class="field">
+        <label class="label" for="nombre">Nombre:</label>
+
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            name="nombre"
+            id="nombre"
+            value="<%= usuario.nombre %>"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="email">Correo:</label>
+
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            name="email"
+            id="email"
+            value="<%= usuario.email %>"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <button type="submit" name="Boton" class="button is-success">
+            Editar Usuario
+          </button>
+        </div>
+      </div>
+    </form>
+
+
+
+<%- include('../footer.ejs') %>
