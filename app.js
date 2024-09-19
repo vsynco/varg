@@ -43,6 +43,8 @@ const oneDay = 24 * 60 * 60 * 1000; // Duración de la caché en milisegundos
 app.use('/static', express.static(path.join(__dirname, 'statics'), {
   maxAge: oneDay
 }));
+app.use('/archivos', express.static('/var/data'));
+
 
 // Rutas
 const routes = require("./routes/routes.js");
