@@ -61,6 +61,7 @@ router.delete('/socios/eliminar/:id', sociosController.eliminarSocio);
 
 router.get('/upload', uploadController.mostrarFormularioSubida);
 router.post('/upload', uploadController.subirArchivo);
+router.post('/eliminar', uploadController.eliminarArchivo);
 
 
 

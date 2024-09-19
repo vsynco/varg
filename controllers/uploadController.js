@@ -53,3 +53,28 @@ exports.subirArchivo = (req, res) => {
     });
   });
 };
+
+exports.eliminarArchivo = (req, res) => {
+    const filename = req.body.filename;
+    const filePath = path.join('/var/data/', filename);
+  
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('Error al eliminar el archivo:', err);
+        return res.status(500).send('Error al eliminar el archivo. Detalles: ' + err.message);
+      }
+      // Leer los archivos del directorio después de la eliminación
+      fs.readdir('/var/data/', (err, files) => {
+        if (err) {
+          console.error('Error al leer el directorio:', err);
+          return res.status(500).send('Error al leer el directorio.');
+        }
+        // Renderizar la vista con la lista actualizada de archivos
+        res.render('secciones/upload', { 
+          message: `Archivo eliminado: ${filename}`,
+          files
+        });
+      });
+    });
+  };
+  
