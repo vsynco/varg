@@ -1,0 +1,32 @@
+<%- include('../header.ejs') %>
+
+<section id="portada" class="profile">
+    <div class="profile-text">
+        <h1>Proyectos</h1>
+        <p>Lista de todos los proyectos</p>
+    </div>
+</section>
+
+<ol style="list-style-type: none; padding: 0;">
+    <li style="display: inline;">
+        <a href="/" style="color: #8be9fd; text-decoration: none;">Portada</a>
+        <span style="color: #6272a4; margin: 0 5px;"> > </span>
+    </li>
+    <li style="display: inline; color: #f8f8f2;" aria-current="page">Proyectos</li>
+</ol>
+
+<section id="lista-proyectos">
+    <h2>Listado de Proyectos</h2>
+    <a href="/proyectos/nuevo">Crear Nuevo Proyecto</a>
+    <ul>
+        <% proyectos.forEach(function(proyecto) { %>
+            <li>
+                <a href="/proyectos/<%= proyecto.id %>" style="color: #8be9fd; text-decoration: none;">
+                    <%= proyecto.nombre %>
+                </a>
+            </li>
+        <% }); %>
+    </ul>
+</section>
+
+<%- include('../footer.ejs') %>

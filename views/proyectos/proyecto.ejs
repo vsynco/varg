@@ -1,0 +1,276 @@
+<%- include('../header.ejs') %>
+
+<section id="portada" class="profile">
+    <img src="/static/imagenes/no.png" alt="<%= proyecto.nombre %>" class="profile-image">
+    <div class="profile-text">
+        <h1><%= proyecto.nombre %></h1>
+        <p><%= proyecto.descripcion %></p>
+    </div>
+</section>
+
+<section id="menu-proyectos">
+<ol style="list-style-type: none; padding: 0;">
+    <li style="display: inline;">
+        <a href="/" style="color: #8be9fd; text-decoration: none;">Portada</a>
+        <span style="color: #6272a4; margin: 0 5px;"> > </span>
+    </li>
+    <li style="display: inline;">
+        <a href="/proyectos" style="color: #8be9fd; text-decoration: none;">Proyectos</a>
+        <span style="color: #6272a4; margin: 0 5px;"> > </span>
+    </li>
+    <li style="display: inline; color: #f8f8f2;" aria-current="page"><%= proyecto.nombre %></li>
+</ol>
+</section>
+
+<section id="descripcion">
+    <h2>Descripción</h2>
+    <p><%= proyecto.descripcion %></p>
+</section>
+
+<section id="enlaces">
+    <h2>Enlaces Importantes</h2>
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li style="margin-bottom: 10px;">
+            <a href="<%= proyecto.sitio_web %>" target="_blank" style="color: #8be9fd; text-decoration: none;">Sitio Web Oficial</a>
+        </li>
+        <% if (proyecto.grupo_whatsapp) { %>
+        <li style="margin-bottom: 10px;">
+            <a href="<%= proyecto.grupo_whatsapp %>" target="_blank" style="color: #8be9fd; text-decoration: none;">Grupo de WhatsApp Informativo</a>
+        </li>
+        <% } %>
+    </ul>
+</section>
+
+<section id="datos-empresa">
+    <h2>Información de la Empresa</h2>
+    <table>
+        <tr>
+            <th>Dato</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>Sociedad</td>
+            <td><%= proyecto.sociedad %></td>
+        </tr>
+        <tr>
+            <td>Nombre de Fantasía</td>
+            <td><%= proyecto.nombre_fantasia %></td>
+        </tr>
+        <tr>
+            <td>RUT</td>
+            <td><%= proyecto.rut %></td>
+        </tr>
+        <tr>
+            <td>Domicilio</td>
+            <td><%= proyecto.domicilio %></td>
+        </tr>
+        <tr>
+            <td>CEO</td>
+            <td><%= proyecto.ceo %></td>
+        </tr>
+    </table>
+</section>
+
+<section id="socios">
+    <h2>Socios</h2>
+    <table id="tablaSocios">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>RUT</th>
+                <th>Porcentaje</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% proyecto.socios.forEach(function(socio) { %>
+                <tr data-id="<%= socio.id %>">
+                    <td>
+                        <span class="socio-nombre"><%= socio.nombre %></span>
+                        <input class="socio-nombre-edit" type="text" value="<%= socio.nombre %>" style="display:none;">
+                    </td>
+                    <td>
+                        <span class="socio-rut"><%= socio.rut %></span>
+                        <input class="socio-rut-edit" type="text" value="<%= socio.rut %>" style="display:none;">
+                    </td>
+                    <td>
+                        <span class="socio-porcentaje"><%= socio.porcentaje %>%</span>
+                        <input class="socio-porcentaje-edit" type="number" value="<%= socio.porcentaje %>" style="display:none;">
+                    </td>
+                    <td>
+                        <button class="edit-btn" onclick="editarSocio(<%= socio.id %>)">Editar</button>
+                        <button class="save-btn" style="display:none;" onclick="guardarSocio(<%= socio.id %>)">Guardar</button>
+                        <button class="cancel-btn" style="display:none;" onclick="cancelarEdicion(<%= socio.id %>)">Cancelar</button>
+                        <button onclick="eliminarSocio(<%= socio.id %>)">Eliminar</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    
+    <% if (user_sesion) { %>
+        <% if (user_sesion.administrador) { %>
+
+            <br>
+            <h3>Agregar Nuevo Socio</h3>
+            <form id="agregarSocioForm">
+            <table id="tablaSocios">
+                <thead>
+                    <tr>
+                        <th><input placeholder="Nombre" type="text" id="nombreSocio" required></th>
+                        <th><input placeholder="Rut" type="text" id="rutSocio" required></th>
+                        <th><input placeholder="Porcentaje" type="number" id="porcentajeSocio" min="1" max="100" required></th>
+                        <th><button type="submit">Agregar Socio</button></th>
+                        <input type="hidden" id="proyectoId" value="<%= proyecto.id %>">
+                    </tr>
+                </thead>
+            </table>
+        </form>
+        <% } %>
+    <% } %>
+
+
+    
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Función para agregar un nuevo socio
+        document.getElementById('agregarSocioForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombreSocio').value;
+            const rut = document.getElementById('rutSocio').value;
+            const porcentaje = document.getElementById('porcentajeSocio').value;
+            const proyectoId = document.getElementById('proyectoId').value;
+
+            try {
+                const response = await fetch('/socios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre, rut, porcentaje, proyectoId }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    // Actualizar la tabla de socios
+                    agregarSocioATabla({ id: result.socioId, nombre, rut, porcentaje });
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Error al agregar socio:', error);
+                alert('Hubo un error al agregar el socio');
+            }
+        });
+
+        // Función para agregar un socio a la tabla
+        function agregarSocioATabla(socio) {
+            const tbody = document.querySelector('#tablaSocios tbody');
+            const row = document.createElement('tr');
+            row.setAttribute('data-id', socio.id);
+            row.innerHTML = `
+                <td>
+                    <span class="socio-nombre">${socio.nombre}</span>
+                    <input class="socio-nombre-edit" type="text" value="${socio.nombre}" style="display:none;">
+                </td>
+                <td>
+                    <span class="socio-rut">${socio.rut}</span>
+                    <input class="socio-rut-edit" type="text" value="${socio.rut}" style="display:none;">
+                </td>
+                <td>
+                    <span class="socio-porcentaje">${socio.porcentaje}%</span>
+                    <input class="socio-porcentaje-edit" type="number" value="${socio.porcentaje}" style="display:none;">
+                </td>
+                <td>
+                    <button class="edit-btn" onclick="editarSocio(${socio.id})">Editar</button>
+                    <button class="save-btn" style="display:none;" onclick="guardarSocio(${socio.id})">Guardar</button>
+                    <button class="cancel-btn" style="display:none;" onclick="cancelarEdicion(${socio.id})">Cancelar</button>
+                    <button onclick="eliminarSocio(${socio.id})">Eliminar</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Función para editar un socio
+        window.editarSocio = function(id) {
+            const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+            row.querySelectorAll('.socio-nombre, .socio-rut, .socio-porcentaje').forEach(el => el.style.display = 'none');
+            row.querySelectorAll('.socio-nombre-edit, .socio-rut-edit, .socio-porcentaje-edit').forEach(el => el.style.display = 'inline');
+            row.querySelector('.edit-btn').style.display = 'none';
+            row.querySelector('.save-btn').style.display = 'inline';
+            row.querySelector('.cancel-btn').style.display = 'inline';
+        };
+
+        // Función para guardar los cambios de un socio
+        window.guardarSocio = async function(id) {
+            const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+            const nombre = row.querySelector('.socio-nombre-edit').value;
+            const rut = row.querySelector('.socio-rut-edit').value;
+            const porcentaje = row.querySelector('.socio-porcentaje-edit').value;
+
+            try {
+                const response = await fetch(`/socios/editar/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre, rut, porcentaje }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    // Actualizar la tabla
+                    row.querySelector('.socio-nombre').textContent = nombre;
+                    row.querySelector('.socio-rut').textContent = rut;
+                    row.querySelector('.socio-porcentaje').textContent = porcentaje + '%';
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Error al guardar los cambios del socio:', error);
+                alert('Hubo un error al guardar los cambios');
+            } finally {
+                row.querySelectorAll('.socio-nombre, .socio-rut, .socio-porcentaje').forEach(el => el.style.display = 'inline');
+                row.querySelectorAll('.socio-nombre-edit, .socio-rut-edit, .socio-porcentaje-edit').forEach(el => el.style.display = 'none');
+                row.querySelector('.edit-btn').style.display = 'inline';
+                row.querySelector('.save-btn').style.display = 'none';
+                row.querySelector('.cancel-btn').style.display = 'none';
+            }
+        };
+
+        // Función para cancelar la edición de un socio
+        window.cancelarEdicion = function(id) {
+            const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+            row.querySelectorAll('.socio-nombre, .socio-rut, .socio-porcentaje').forEach(el => el.style.display = 'inline');
+            row.querySelectorAll('.socio-nombre-edit, .socio-rut-edit, .socio-porcentaje-edit').forEach(el => el.style.display = 'none');
+            row.querySelector('.edit-btn').style.display = 'inline';
+            row.querySelector('.save-btn').style.display = 'none';
+            row.querySelector('.cancel-btn').style.display = 'none';
+        };
+
+        // Función para eliminar un socio
+        window.eliminarSocio = async function(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este socio?')) {
+                try {
+                    const response = await fetch(`/socios/eliminar/${id}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response.ok) {
+                        const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+                        row.remove();
+                    } else {
+                        const result = await response.json();
+                        alert(result.error);
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar socio:', error);
+                    alert('Hubo un error al eliminar el socio');
+                }
+            }
+        };
+    });
+</script>

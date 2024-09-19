@@ -59,6 +59,16 @@
             color: #8be9fd;
             text-decoration: none;
         }
+        td {
+            padding: 10px;
+            border: 1px solid #6272a4;
+        }
+        th {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #6272a4;
+            background-color: #44475a;
+        }
         .profile {
             display: flex;
             align-items: center;
@@ -87,12 +97,16 @@
             gap: 20px;
         }
         .project {
+            
             background-color: #44475a;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             border: 1px solid #44475a;
         }
+.display-none {
+    display: none; /* Oculta todos los proyectos por defecto */
+}
 
         .project:hover {
             border: 1px solid #ff79c6;
@@ -198,6 +212,80 @@
         .collaboration-link:hover {
             color: #f1fa8c;
         }
+
+        h1,h2,h3,h4,h5,h6 {
+            color: #ff79c6;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        section {
+            margin-bottom: 30px;
+        }
+
+
+
+        
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 0.5rem;
+    color: #bd93f9;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="number"],
+textarea {
+    padding: 0.5rem;
+    margin: 0px;
+    border: 1px solid #6272a4;
+    border-radius: 3px;
+    background-color: #282a36;
+    color: #f8f8f2;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+button[type="submit"] {
+            color: #8be9fd;
+            text-decoration: none;
+    padding: 0.75rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace;
+}
+
+button[type="submit"]:hover {
+    color: #f1fa8c;
+}
+
+
+a {
+            color: #8be9fd;
+            text-decoration: none;
+}
+
+
+a:hover {
+            color: #f1fa8c;
+        }
+
+.mb3 {
+    margin-bottom: 1rem;
+}
+        
     </style>
 </head>
 <body>
@@ -208,7 +296,15 @@
                 <li><a href="/blog">Blog</a></li>
                 <li><a href="/contacto">Contacto</a></li>
             </ul>
-            <a href="/acceso" class="access-link">Acceso</a>
+            <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
+                <div class="access-link">
+                    <span style="color: #f8f8f2; margin-right: 10px;"><%= user_sesion.nombre %></span>
+                    <a href="/perfil" style="color: #8be9fd; text-decoration: none; margin-right: 10px;">Perfil</a>
+                    <a href="/salir" style="color: #ff5555; text-decoration: none;">Salir</a>
+                </div>
+            <% } else { %>
+                <a href="/acceso" class="access-link">Acceso</a>
+            <% } %>
         </div>
     </nav>
     <div class="container">

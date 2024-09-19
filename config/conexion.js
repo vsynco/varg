@@ -1,19 +1,34 @@
-const port = process.env.PORT || 3000;
+const mysql = require('mysql2/promise');
+require('dotenv').config();
 
-require("dotenv").config();
-const { Pool } = require("pg");
-
-const pool = new Pool({
-  user: process.env.BBDD_USER,
+// Crear el pool de conexiones
+const pool = mysql.createPool({
   host: process.env.BBDD_HOSTNAME,
-  database: process.env.BBDD_DATABASE,
+  user: process.env.BBDD_USER,
   password: process.env.BBDD_PASSWORD,
-  port: process.env.BBDD_PORT,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  database: process.env.BBDD_DATABASE,
+  connectionLimit: 10
 });
 
-module.exports = {
-  query: (text, params) => pool.query(text, params),
+// Verificar la conexión
+const checkConnection = async () => {
+  try {
+    const connection = await pool.getConnection();
+    connection.release(); // Liberar la conexión de vuelta al pool
+  } catch (err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.error('Database connection was closed.');
+    } else if (err.code === 'ER_CON_COUNT_ERROR') {
+      console.error('Database has too many connections.');
+    } else if (err.code === 'ECONNREFUSED') {
+      console.error('Database connection was refused.');
+    } else {
+      console.error('Database connection error:', err.message);
+    }
+  }
 };
+
+// Ejecutar la verificación de conexión al iniciar
+checkConnection();
+
+module.exports = pool;

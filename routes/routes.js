@@ -5,7 +5,10 @@ const router = express.Router();
 const is = require("../config/authMiddleware");
 
 const personasController  = require("../controllers/personasController");
+const proyectosController  = require("../controllers/proyectosController");
 const seccionesController = require("../controllers/seccionesController");
+const sociosController = require("../controllers/sociosController");
+const uploadController = require("../controllers/uploadController");
 const { waitUntilObjectExists } = require("@aws-sdk/client-s3");
 // Desarrollo
 
@@ -27,6 +30,38 @@ router.get("/", seccionesController.mostrarPortada);
 router.get("/contacto", seccionesController.mostrarContacto);
 router.get("/blog", seccionesController.mostrarBlog);
 router.get("/only", seccionesController.mostrarOnly);
+
+// PROYECTOS
+
+// router.get("/jaskier", proyectosController.mostrarJaskier);
+// router.get("/synco", proyectosController.mostrarSynco);
+// router.get("/armis", proyectosController.mostrarArmis);
+// router.get("/auda", proyectosController.mostrarAuda);
+// router.get("/buzo", proyectosController.mostrarBuzo);
+// router.get("/puig", proyectosController.mostrarPuig);
+// router.get("/clubon", proyectosController.mostrarClubon);
+
+// Rutas GET
+router.get('/proyectos/nuevo', proyectosController.mostrarFormularioNuevoProyecto);
+router.get('/proyectos', proyectosController.listarProyectos);
+router.get('/proyectos/:id', proyectosController.mostrarProyecto);
+
+// Rutas POST, PUT, DELETE (asumiendo que tienes autenticación/autorización implementada)
+router.post('/proyectos/', proyectosController.crearProyecto);
+router.put('/proyectos/:id', proyectosController.actualizarProyecto);
+
+
+
+// SOCIOS
+router.post('/socios', sociosController.anadirSocio);
+router.put('/socios/editar/:id', sociosController.editarSocio);
+router.delete('/socios/eliminar/:id', sociosController.eliminarSocio);
+
+// UPLOAD
+
+router.get('/upload', uploadController.mostrarFormularioSubida);
+router.post('/upload', uploadController.subirArchivo);
+
 
 
 
@@ -58,11 +93,6 @@ router.get("/registro", async (req, res, next) => {
 });
 
 router.post("/registro", personasController.registrarPersona);
-
-// ACCESO GOOGLE
-
-router.get("/google", personasController.iniciarAutenticacionGoogle);
-router.get("/google_callback", personasController.manejarCallbackGoogle);
 
 // Perfil
 

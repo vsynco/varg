@@ -1,7 +1,5 @@
 <%- include('../header.ejs') %>
 
-
-
         <section id="portada" class="profile">
             <img src="/static/imagenes/foto.png" alt="Mi foto de perfil" class="profile-image">
             <div class="profile-text">
@@ -9,13 +7,29 @@
                 <p>Aceleración de Negocios, Abogado y Desarrollador JS/NodeJS.</p>
             </div>
         </section>
+
         <section id="proyectos-socio" class="projects-section">
-            <h2>Proyectos</h2>
+            <div class="projects-header" style="display: flex; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin-right: 20px;">Proyectos</h2>
+                <div class="filter-options" style="display: flex; gap: 10px;">
+                    <button class="filter-btn active" data-filter="active" style="background-color: #6272a4; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Activos</button>
+                    <button class="filter-btn" data-filter="development" style="background-color: #44475a; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Desarrollo</button>
+                    <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
+                        <button class="filter-btn" data-filter="secret" style="background-color: #44475a; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Secretos</button>
+                    <% } %>
+                    <button class="filter-btn" data-filter="all" style="background-color: #44475a; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Todos</button>
+               
+               
+               
+            
+               
+               
+                </div>
+            </div>
+            
             <div class="projects">
-               
-               
-               
-                <a href="https://armis.cl" target="_blank" class="a-link"><div class="project">
+                
+                    <div class="project active display-none">
                     <div class="project-header">
                         <img src="/static/imagenes/armis.png" alt="ARMIS" class="project-image">
                         <div class="project-title">
@@ -38,14 +52,10 @@
                             <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
                         </div>
                     </div>
-                    <!-- <a href="#" class="project-link">Ver proyecto</a> -->
+                    <a href="/armis" class="project-link">Información de Proyecto</a>
                 </div>
-            </a>
 
-
-
-            <a href="https://auda.cl" target="_blank"  class="a-link">
-                <div class="project">
+                <div class="project active display-none">
                     <div class="project-header">
                         <img src="/static/imagenes/auda.png" alt="AUDA" class="project-image">
                         <div class="project-title">
@@ -68,13 +78,13 @@
                             <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
                         </div>
                     </div>
-                </div></a>
+                    <a href="/auda" class="project-link">Información de Proyecto</a>
+                </div>
 
 
                 
 
-                <a href="https://synco.cl" target="_blank"  class="a-link">
-                <div class="project">
+                <div class="project active display-none">
                     <div class="project-header">
                         <img src="/static/imagenes/synco.png" alt="SYNCO" class="project-image">
                         <div class="project-title">
@@ -82,7 +92,7 @@
                             <p class="project-rights">Estado: 99%</p>
                         </div>
                     </div>
-                    <p>Gestión de Redes Sociales.</p>
+                    <p>Aceleración Tecnológica de Negocios.</p>
                     <div class="skills">
                         <div class="skill">
                             <span class="skill-name">Legal</span>
@@ -97,11 +107,11 @@
                             <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
                         </div>
                     </div>
+                    <a href="/synco" class="project-link">Información de Proyecto</a>
                 </div>
-</a>
 
 
-<div class="project">
+<div class="project development display-none">
     <div class="project-header">
         <img src="/static/imagenes/puig.png" alt="PUIG" class="project-image">
         <div class="project-title">
@@ -124,10 +134,11 @@
             <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
         </div>
     </div>
+    <a href="/puig" class="project-link">Información de Proyecto</a>
 </div>
 
 
-                <div class="project">
+                <div class="project development display-none">
                     <div class="project-header">
                         <img src="/static/imagenes/no.png" alt="CLUBON" class="project-image">
                         <div class="project-title">
@@ -150,13 +161,14 @@
                             <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
                         </div>
                     </div>
+                    <a href="/clubon" class="project-link">Información de Proyecto</a>
                 </div>
 
 
 
 
 
-                <div class="project">
+                <div class="project development display-none">
                     <div class="project-header">
                         <img src="/static/imagenes/buzo.png" alt="BUZO" class="project-image">
                         <div class="project-title">
@@ -179,18 +191,87 @@
                             <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
                         </div>
                     </div>
+                    <a href="/buzo" class="project-link">Información de Proyecto</a>
                 </div>
 
 
 
 
 
+                <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
+                    <div class="project secret display-none">
+                        <div class="project-header">
+                            <img src="/static/imagenes/jaskier.jpg" alt="BUZO" class="project-image">
+                            <div class="project-title">
+                                <h3>PROYECTO JASKIER</h3>
+                                <p class="project-rights">Estado: 75%</p>
+                            </div>
+                        </div>
+                        <p>Plataforma tipo Onlyfans</p>
+                        <div class="skills">
+                            <div class="skill">
+                                <span class="skill-name">Legal</span>
+                                <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="skill">
+                                <span class="skill-name">Diseño</span>
+                                <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="skill">
+                                <span class="skill-name">Código</span>
+                                <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
+                            </div>
+                        </div>
+                        <a href="/jaskier" class="project-link">Información de Proyecto</a>
+                    </div>
+                    <% } %>
+                
+
+
+
+
 
             </div>
-
-
         </section>
 
 
+
+
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const projects = document.querySelectorAll('.project');
+            
+                function filterProjects(filter) {
+                    projects.forEach(project => {
+                        project.style.display = (filter === 'all' || project.classList.contains(filter)) ? 'block' : 'none';
+                    });
+                }
+            
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const filter = button.getAttribute('data-filter');
+                        
+                        filterButtons.forEach(btn => {
+                            btn.classList.remove('active');
+                            btn.style.backgroundColor = '#44475a';
+                        });
+                        
+                        button.classList.add('active');
+                        button.style.backgroundColor = '#6272a4';
+            
+                        filterProjects(filter);
+                    });
+                });
+            
+                // Filtrar proyectos activos por defecto
+                filterProjects('active');
+            });
+            </script>
+            
 
 <%- include('../footer.ejs') %>
