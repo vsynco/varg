@@ -1,0 +1,816 @@
+<%- include('../header.ejs') %>
+
+<section id="portada" class="profile" style="position: relative;">
+    <img 
+    src="<%= proyecto.foto_perfil_url ? ('/archivos/' + proyecto.foto_perfil_url) : '/static/imagenes/no.png' %>" 
+    alt="<%= proyecto.nombre %>" 
+    class="profile-image">
+    <div class="profile-text">
+        <h1><%= proyecto.nombre %></h1>
+        <p><%= proyecto.subtitulo %></p>
+    </div>
+    <a href="/proyectos/<%= proyecto.id %>" style="position: absolute; top: 10px; right: 10px;">Volver</a>
+</section>
+
+<section id="menu-proyectos">
+<ol style="list-style-type: none; padding: 0;">
+    <li style="display: inline;">
+        <a href="/" style="color: #8be9fd; text-decoration: none;">Portada</a>
+        <span style="color: #6272a4; margin: 0 5px;"> > </span>
+    </li>
+    <li style="display: inline;">
+        <a href="/proyectos" style="color: #8be9fd; text-decoration: none;">Proyectos</a>
+        <span style="color: #6272a4; margin: 0 5px;"> > </span>
+    </li>
+    
+    <li style="display: inline;">
+        <a href="/proyectos/<%= proyecto.id %>" style="color: #8be9fd; text-decoration: none;"><%= proyecto.nombre %></a>
+        <span style="color: #6272a4; margin: 0 5px;"> > </span>
+    </li>
+    <li style="display: inline; color: #f8f8f2;" aria-current="page">Editar</li>
+</ol>
+</section>
+
+<section id="portada">
+    <h2>Imágen del Proyecto</h2> 
+    <form action="/proyectos/foto" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="proyecto_id" value="<%= proyecto.id %>">
+        <table>
+            <tr>
+                <td>
+                    <input type="file" id="imagen-proyecto" name="file" accept="image/*">
+                </td>
+            </tr>
+        </table>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+    
+</section>
+
+<script>
+    // Selecciona los elementos de la imagen y el input de archivo
+    const imagenActual = document.getElementById('imagen-actual');
+    const inputImagenProyecto = document.getElementById('imagen-proyecto');
+
+    // Agrega un event listener al input de archivo para detectar cambios
+    inputImagenProyecto.addEventListener('change', function(event) {
+        const archivo = event.target.files[0];  // Obtiene el archivo seleccionado
+
+        // Verifica si el archivo es una imagen
+        if (archivo && archivo.type.startsWith('image/')) {
+            const lector = new FileReader();
+
+            // Cuando la imagen esté cargada, cambia el src de la imagen actual
+            lector.onload = function(e) {
+                imagenActual.src = e.target.result;  // Actualiza la imagen con la imagen seleccionada
+            };
+
+            // Lee la imagen seleccionada como una URL
+            lector.readAsDataURL(archivo);
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<section id="datos-empresa">
+    <h2>Información del Proyecto</h2>
+    <form action="/proyectos/editar/<%= proyecto.id %>/" method="POST" class="form-full">
+        <table>
+            <tr>
+                <th>Dato</th>
+                <th>Valor</th>
+            </tr>
+            <tr>
+                <td>Nombre del Proyecto</td>
+                <td><input type="text" id="nombre" name="nombre" value="<%= proyecto.nombre %>"></td>
+            </tr>
+            <tr>
+                <td>Subtítulo</td>
+                <td><input type="text" id="subtitulo" name="subtitulo" value="<%= proyecto.subtitulo %>"></td>
+            </tr>
+            <tr>
+                <td>Descripción</td>
+                <td><textarea id="descripcion" name="descripcion" class="textarea-no-resize"><%= proyecto.descripcion %></textarea></td>
+            </tr>
+
+<tr>
+    <td>Estado</td>
+    <td>
+        <select id="estado" name="estado">
+            <option value="activo" <%= proyecto.estado === 'activo' ? 'selected' : '' %>>Activo</option>
+            <option value="desarrollo" <%= proyecto.estado === 'desarrollo' ? 'selected' : '' %>>En Desarrollo</option>
+            <option value="secreto" <%= proyecto.estado === 'secreto' ? 'selected' : '' %>>Secreto</option>
+        </select>
+
+</tr>
+
+<tr>
+    <td>Porcentaje Legal</td>
+    <td><input type="number" name="porcentaje_legal" value="<%= proyecto.porcentaje_legal %>"></td>
+</tr>
+
+<tr>
+    <td>Porcentaje Diseño</td>
+    <td><input type="number" name="porcentaje_diseno" value="<%= proyecto.porcentaje_diseno %>"></td>
+</tr>
+
+<tr>
+    <td>Porcentaje Código</td>
+    <td><input type="number" name="porcentaje_codigo" value="<%= proyecto.porcentaje_codigo %>"></td>
+</tr>
+
+
+
+
+
+
+
+            <tr>
+                <td>Sociedad</td>
+                <td><input type="text" name="sociedad" value="<%= proyecto.sociedad %>"></td>
+            </tr>
+            <tr>
+                <td>Nombre de Fantasía</td>
+                <td><input type="text" name="nombre_fantasia" value="<%= proyecto.nombre_fantasia %>"></td>
+            </tr>
+            <tr>
+                <td>RUT</td>
+                <td><input type="text" name="rut" value="<%= proyecto.rut %>"></td>
+            </tr>
+            <tr>
+                <td>Domicilio</td>
+                <td><input type="text" name="domicilio" value="<%= proyecto.domicilio %>"></td>
+            </tr>
+            <tr>
+                <td>CEO</td>
+                <td><input type="text" name="ceo" value="<%= proyecto.ceo %>"></td>
+            </tr>
+        </table>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="enlaces-proyecto">
+    <h2>Enlaces del Proyecto</h2>
+    <div id="enlaces-container">
+        <% if (enlaces && enlaces.length > 0) { %>
+            <table id="tablaEnlaces">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>URL</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% enlaces.forEach(function(enlace) { %>
+                        <tr data-id="<%= enlace.id %>">
+                            <td>
+                                <span class="enlace-nombre"><%= enlace.nombre %></span>
+                                <input class="enlace-nombre-edit" type="text" value="<%= enlace.nombre %>" style="display:none;">
+                            </td>
+                            <td>
+                                <span class="enlace-url"><%= enlace.url %></span>
+                                <input class="enlace-url-edit" type="text" value="<%= enlace.url %>" style="display:none;">
+                            </td>
+                            <td>
+                                <button class="edit-btn" onclick="editarEnlace(<%= enlace.id %>)">Editar</button>
+                                <button class="save-btn" style="display:none;" onclick="guardarEnlace(<%= enlace.id %>)">Guardar</button>
+                                <button class="cancel-btn" style="display:none;" onclick="cancelarEdicionEnlace(<%= enlace.id %>)">Cancelar</button>
+                                <button onclick="eliminarEnlace(<%= enlace.id %>)">Eliminar</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No hay enlaces asociados a este proyecto.</p>
+        <% } %>
+    </div>
+
+    <h3>Agregar Nuevo Enlace</h3>
+    <form id="agregarEnlaceForm" class="form-full">
+        <input type="text" id="nombreEnlace" placeholder="Nombre del enlace" required>
+        <input type="url" id="urlEnlace" placeholder="URL del enlace" required>
+        <input type="hidden" id="proyectoId" value="<%= proyecto.id %>">
+        <button type="submit">Agregar Enlace</button>
+    </form>
+</section>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Función para agregar un nuevo enlace
+    document.getElementById('agregarEnlaceForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById('nombreEnlace').value;
+    const url = document.getElementById('urlEnlace').value;
+    const proyecto_id = document.getElementById('proyectoId').value;
+
+    try {
+        console.log('Enviando datos:', { nombre, url, proyecto_id });
+        const response = await fetch('/enlaces', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nombre, url, proyecto_id }),
+        });
+
+        console.log('Respuesta recibida:', response);
+        const result = await response.json();
+        console.log('Datos de respuesta:', result);
+
+        if (response.ok) {
+            agregarEnlaceATabla({ id: result.enlaceId, nombre, url });
+        } else {
+            alert('Error del servidor: ' + (result.error || 'Desconocido'));
+        }
+    } catch (error) {
+        console.error('Error detallado al agregar enlace:', error);
+        alert('Hubo un error al agregar el enlace: ' + error.message);
+    }
+});
+
+    // Función para agregar un enlace a la tabla
+    function agregarEnlaceATabla(enlace) {
+    let tbody = document.querySelector('#tablaEnlaces tbody');
+    
+    // Si no existe la tabla, la creamos
+    if (!tbody) {
+        const tablaEnlaces = document.createElement('table');
+        tablaEnlaces.id = 'tablaEnlaces';
+        tablaEnlaces.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>URL</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        document.querySelector('#enlaces-proyecto').appendChild(tablaEnlaces);
+        tbody = tablaEnlaces.querySelector('tbody');
+    }
+
+    const row = document.createElement('tr');
+    row.setAttribute('data-id', enlace.id);
+    row.innerHTML = `
+        <td>
+            <span class="enlace-nombre">${enlace.nombre}</span>
+            <input class="enlace-nombre-edit" type="text" value="${enlace.nombre}" style="display:none;">
+        </td>
+        <td>
+            <span class="enlace-url">${enlace.url}</span>
+            <input class="enlace-url-edit" type="text" value="${enlace.url}" style="display:none;">
+        </td>
+        <td>
+            <button class="edit-btn" onclick="editarEnlace(${enlace.id})">Editar</button>
+            <button class="save-btn" style="display:none;" onclick="guardarEnlace(${enlace.id})">Guardar</button>
+            <button class="cancel-btn" style="display:none;" onclick="cancelarEdicionEnlace(${enlace.id})">Cancelar</button>
+            <button onclick="eliminarEnlace(${enlace.id})">Eliminar</button>
+        </td>
+    `;
+    tbody.appendChild(row);
+
+    // Si este es el primer enlace, eliminamos el mensaje de "No hay enlaces"
+    const noEnlacesMsg = document.querySelector('#enlaces-proyecto p');
+    if (noEnlacesMsg && noEnlacesMsg.textContent === 'No hay enlaces asociados a este proyecto.') {
+        noEnlacesMsg.remove();
+    }
+}
+
+
+    // Función para editar un enlace
+    window.editarEnlace = function(id) {
+        const row = document.querySelector(`#tablaEnlaces tr[data-id='${id}']`);
+        row.querySelectorAll('.enlace-nombre, .enlace-url').forEach(el => el.style.display = 'none');
+        row.querySelectorAll('.enlace-nombre-edit, .enlace-url-edit').forEach(el => el.style.display = 'inline');
+        row.querySelector('.edit-btn').style.display = 'none';
+        row.querySelector('.save-btn').style.display = 'inline';
+        row.querySelector('.cancel-btn').style.display = 'inline';
+    };
+
+    // Función para guardar los cambios de un enlace
+    window.guardarEnlace = async function(id) {
+        const row = document.querySelector(`#tablaEnlaces tr[data-id='${id}']`);
+        const nombre = row.querySelector('.enlace-nombre-edit').value;
+        const url = row.querySelector('.enlace-url-edit').value;
+
+        try {
+            const response = await fetch(`/enlaces/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nombre, url }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                row.querySelector('.enlace-nombre').textContent = nombre;
+                row.querySelector('.enlace-url').textContent = url;
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Error al guardar los cambios del enlace:', error);
+            alert('Hubo un error al guardar los cambios');
+        } finally {
+            row.querySelectorAll('.enlace-nombre, .enlace-url').forEach(el => el.style.display = 'inline');
+            row.querySelectorAll('.enlace-nombre-edit, .enlace-url-edit').forEach(el => el.style.display = 'none');
+            row.querySelector('.edit-btn').style.display = 'inline';
+            row.querySelector('.save-btn').style.display = 'none';
+            row.querySelector('.cancel-btn').style.display = 'none';
+        }
+    };
+
+    // Función para cancelar la edición de un enlace
+    window.cancelarEdicionEnlace = function(id) {
+        const row = document.querySelector(`#tablaEnlaces tr[data-id='${id}']`);
+        row.querySelectorAll('.enlace-nombre, .enlace-url').forEach(el => el.style.display = 'inline');
+        row.querySelectorAll('.enlace-nombre-edit, .enlace-url-edit').forEach(el => el.style.display = 'none');
+        row.querySelector('.edit-btn').style.display = 'inline';
+        row.querySelector('.save-btn').style.display = 'none';
+        row.querySelector('.cancel-btn').style.display = 'none';
+    };
+
+    // Función para eliminar un enlace
+    window.eliminarEnlace = async function(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar este enlace?')) {
+            try {
+                const response = await fetch(`/enlaces/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {
+                    const row = document.querySelector(`#tablaEnlaces tr[data-id='${id}']`);
+                    row.remove();
+                } else {
+                    const result = await response.json();
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Error al eliminar enlace:', error);
+                alert('Hubo un error al eliminar el enlace');
+            }
+        }
+    };
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="datos-bancarios">
+    <h2>Cuentas Bancarias</h2>
+    <table id="tablaCuentas">
+        <thead>
+            <tr>
+                <th>Banco</th>
+                <th>Tipo de Cuenta</th>
+                <th>Número de Cuenta</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (proyecto.cuentas_bancarias && proyecto.cuentas_bancarias.length > 0) { %>
+                <% proyecto.cuentas_bancarias.forEach((cuenta, index) => { %>
+                    <tr data-id="<%= cuenta.id %>">
+                        <td>
+                            <span class="cuenta-nombre"><%= cuenta.nombre %></span>
+                            <input class="cuenta-nombre-edit" type="text" value="<%= cuenta.nombre %>" style="display:none;">
+                        </td>
+                        <td>
+                            <span class="cuenta-tipo"><%= cuenta.tipo_cuenta %></span>
+                            <input class="cuenta-tipo-edit" type="text" value="<%= cuenta.tipo_cuenta %>" style="display:none;">
+                        </td>
+                        <td>
+                            <span class="cuenta-numero"><%= cuenta.numero_cuenta %></span>
+                            <input class="cuenta-numero-edit" type="text" value="<%= cuenta.numero_cuenta %>" style="display:none;">
+                        </td>
+                        <td>
+                            <button class="edit-btn" onclick="editarCuenta(<%= cuenta.id %>)">Editar</button>
+                            <button class="save-btn" style="display:none;" onclick="guardarCuenta(<%= cuenta.id %>)">Guardar</button>
+                            <button class="cancel-btn" style="display:none;" onclick="cancelarEdicionCuenta(<%= cuenta.id %>)">Cancelar</button>
+                            <button onclick="eliminarCuenta(<%= cuenta.id %>)">Eliminar</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="4">No hay cuentas bancarias registradas.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <h3>Agregar Nueva Cuenta Bancaria</h3>
+    <form id="agregarCuentaForm" class="form-full">
+        <table>
+            <tr>
+                <th><input placeholder="Banco" type="text" id="nombreBanco" required></th>
+                <th><input placeholder="Tipo de Cuenta" type="text" id="tipoCuenta" required></th>
+                <th><input placeholder="Número de Cuenta" type="text" id="numeroCuenta" required></th>
+                <input type="hidden" id="proyectoId" value="<%= proyecto.id %>">
+            </tr>
+        </table>
+        <button type="submit">Agregar Cuenta</button>
+    </form>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Función para agregar una nueva cuenta bancaria
+    document.getElementById('agregarCuentaForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const nombre = document.getElementById('nombreBanco').value;
+        const tipo_cuenta = document.getElementById('tipoCuenta').value;
+        const numero_cuenta = document.getElementById('numeroCuenta').value;
+        const proyecto_id = document.getElementById('proyectoId').value;
+
+        try {
+            const response = await fetch('/cuentas-bancarias', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nombre, tipo_cuenta, numero_cuenta, proyecto_id }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                agregarCuentaATabla({ id: result.cuentaId, nombre, tipo_cuenta, numero_cuenta });
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Error al agregar cuenta bancaria:', error);
+            alert('Hubo un error al agregar la cuenta bancaria');
+        }
+    });
+
+    // Función para agregar una cuenta a la tabla
+    function agregarCuentaATabla(cuenta) {
+        const tbody = document.querySelector('#tablaCuentas tbody');
+        const row = document.createElement('tr');
+        row.setAttribute('data-id', cuenta.id);
+        row.innerHTML = `
+            <td>
+                <span class="cuenta-nombre">${cuenta.nombre}</span>
+                <input class="cuenta-nombre-edit" type="text" value="${cuenta.nombre}" style="display:none;">
+            </td>
+            <td>
+                <span class="cuenta-tipo">${cuenta.tipo_cuenta}</span>
+                <input class="cuenta-tipo-edit" type="text" value="${cuenta.tipo_cuenta}" style="display:none;">
+            </td>
+            <td>
+                <span class="cuenta-numero">${cuenta.numero_cuenta}</span>
+                <input class="cuenta-numero-edit" type="text" value="${cuenta.numero_cuenta}" style="display:none;">
+            </td>
+            <td>
+                <button class="edit-btn" onclick="editarCuenta(${cuenta.id})">Editar</button>
+                <button class="save-btn" style="display:none;" onclick="guardarCuenta(${cuenta.id})">Guardar</button>
+                <button class="cancel-btn" style="display:none;" onclick="cancelarEdicionCuenta(${cuenta.id})">Cancelar</button>
+                <button onclick="eliminarCuenta(${cuenta.id})">Eliminar</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    // Función para editar una cuenta
+    window.editarCuenta = function(id) {
+        const row = document.querySelector(`#tablaCuentas tr[data-id='${id}']`);
+        row.querySelectorAll('.cuenta-nombre, .cuenta-tipo, .cuenta-numero').forEach(el => el.style.display = 'none');
+        row.querySelectorAll('.cuenta-nombre-edit, .cuenta-tipo-edit, .cuenta-numero-edit').forEach(el => el.style.display = 'inline');
+        row.querySelector('.edit-btn').style.display = 'none';
+        row.querySelector('.save-btn').style.display = 'inline';
+        row.querySelector('.cancel-btn').style.display = 'inline';
+    };
+
+    // Función para guardar los cambios de una cuenta
+    window.guardarCuenta = async function(id) {
+        const row = document.querySelector(`#tablaCuentas tr[data-id='${id}']`);
+        const nombre = row.querySelector('.cuenta-nombre-edit').value;
+        const tipo_cuenta = row.querySelector('.cuenta-tipo-edit').value;
+        const numero_cuenta = row.querySelector('.cuenta-numero-edit').value;
+
+        try {
+            const response = await fetch(`/cuentas-bancarias/editar/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nombre, tipo_cuenta, numero_cuenta }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                row.querySelector('.cuenta-nombre').textContent = nombre;
+                row.querySelector('.cuenta-tipo').textContent = tipo_cuenta;
+                row.querySelector('.cuenta-numero').textContent = numero_cuenta;
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Error al guardar los cambios de la cuenta:', error);
+            alert('Hubo un error al guardar los cambios');
+        } finally {
+            row.querySelectorAll('.cuenta-nombre, .cuenta-tipo, .cuenta-numero').forEach(el => el.style.display = 'inline');
+            row.querySelectorAll('.cuenta-nombre-edit, .cuenta-tipo-edit, .cuenta-numero-edit').forEach(el => el.style.display = 'none');
+            row.querySelector('.edit-btn').style.display = 'inline';
+            row.querySelector('.save-btn').style.display = 'none';
+            row.querySelector('.cancel-btn').style.display = 'none';
+        }
+    };
+
+    // Función para cancelar la edición de una cuenta
+    window.cancelarEdicionCuenta = function(id) {
+        const row = document.querySelector(`#tablaCuentas tr[data-id='${id}']`);
+        row.querySelectorAll('.cuenta-nombre, .cuenta-tipo, .cuenta-numero').forEach(el => el.style.display = 'inline');
+        row.querySelectorAll('.cuenta-nombre-edit, .cuenta-tipo-edit, .cuenta-numero-edit').forEach(el => el.style.display = 'none');
+        row.querySelector('.edit-btn').style.display = 'inline';
+        row.querySelector('.save-btn').style.display = 'none';
+        row.querySelector('.cancel-btn').style.display = 'none';
+    };
+
+    // Función para eliminar una cuenta
+    window.eliminarCuenta = async function(id) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta cuenta bancaria?')) {
+            try {
+                const response = await fetch(`/cuentas-bancarias/eliminar/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {
+                    const row = document.querySelector(`#tablaCuentas tr[data-id='${id}']`);
+                    row.remove();
+                } else {
+                    const result = await response.json();
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Error al eliminar cuenta bancaria:', error);
+                alert('Hubo un error al eliminar la cuenta bancaria');
+            }
+        }
+    };
+});
+</script>
+
+
+
+
+
+
+
+<section id="socios">
+    <h2>Socios</h2>
+    <table id="tablaSocios">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>RUT</th>
+                <th>Porcentaje</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% proyecto.socios.forEach(function(socio) { %>
+                <tr data-id="<%= socio.id %>">
+                    <td>
+                        <span class="socio-nombre"><%= socio.nombre %></span>
+                        <input class="socio-nombre-edit" type="text" value="<%= socio.nombre %>" style="display:none;">
+                    </td>
+                    <td>
+                        <span class="socio-rut"><%= socio.rut %></span>
+                        <input class="socio-rut-edit" type="text" value="<%= socio.rut %>" style="display:none;">
+                    </td>
+                    <td>
+                        <span class="socio-porcentaje"><%= socio.porcentaje %>%</span>
+                        <input class="socio-porcentaje-edit" type="number" value="<%= socio.porcentaje %>" style="display:none;">
+                    </td>
+                    <td>
+                        <button class="edit-btn" onclick="editarSocio(<%= socio.id %>)">Editar</button>
+                        <button class="save-btn" style="display:none;" onclick="guardarSocio(<%= socio.id %>)">Guardar</button>
+                        <button class="cancel-btn" style="display:none;" onclick="cancelarEdicion(<%= socio.id %>)">Cancelar</button>
+                        <button onclick="eliminarSocio(<%= socio.id %>)">Eliminar</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    
+    <% if (user_sesion) { %>
+        <% if (user_sesion.administrador) { %>
+
+            <br>
+            <h3>Agregar Nuevo Socio</h3>
+            <form id="agregarSocioForm" class="form-full">
+            <table id="tablaSocios">
+                <thead>
+                    <tr>
+                        <th><input placeholder="Nombre" type="text" id="nombreSocio" required></th>
+                        <th><input placeholder="Rut" type="text" id="rutSocio" required></th>
+                        <th><input placeholder="Porcentaje" type="number" id="porcentajeSocio" min="1" max="100" required></th>
+                        <input type="hidden" id="proyectoId" value="<%= proyecto.id %>">
+                    </tr>
+                </thead>
+            </table>
+            <button type="submit">Agregar Socio</button>
+        </form>
+        <% } %>
+    <% } %>
+
+
+    
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Función para agregar un nuevo socio
+        document.getElementById('agregarSocioForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombreSocio').value;
+            const rut = document.getElementById('rutSocio').value;
+            const porcentaje = document.getElementById('porcentajeSocio').value;
+            const proyectoId = document.getElementById('proyectoId').value;
+
+            try {
+                const response = await fetch('/socios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre, rut, porcentaje, proyectoId }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    // Actualizar la tabla de socios
+                    agregarSocioATabla({ id: result.socioId, nombre, rut, porcentaje });
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Error al agregar socio:', error);
+                alert('Hubo un error al agregar el socio');
+            }
+        });
+
+        // Función para agregar un socio a la tabla
+        function agregarSocioATabla(socio) {
+            const tbody = document.querySelector('#tablaSocios tbody');
+            const row = document.createElement('tr');
+            row.setAttribute('data-id', socio.id);
+            row.innerHTML = `
+                <td>
+                    <span class="socio-nombre">${socio.nombre}</span>
+                    <input class="socio-nombre-edit" type="text" value="${socio.nombre}" style="display:none;">
+                </td>
+                <td>
+                    <span class="socio-rut">${socio.rut}</span>
+                    <input class="socio-rut-edit" type="text" value="${socio.rut}" style="display:none;">
+                </td>
+                <td>
+                    <span class="socio-porcentaje">${socio.porcentaje}%</span>
+                    <input class="socio-porcentaje-edit" type="number" value="${socio.porcentaje}" style="display:none;">
+                </td>
+                <td>
+                    <button class="edit-btn" onclick="editarSocio(${socio.id})">Editar</button>
+                    <button class="save-btn" style="display:none;" onclick="guardarSocio(${socio.id})">Guardar</button>
+                    <button class="cancel-btn" style="display:none;" onclick="cancelarEdicion(${socio.id})">Cancelar</button>
+                    <button onclick="eliminarSocio(${socio.id})">Eliminar</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Función para editar un socio
+        window.editarSocio = function(id) {
+            const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+            row.querySelectorAll('.socio-nombre, .socio-rut, .socio-porcentaje').forEach(el => el.style.display = 'none');
+            row.querySelectorAll('.socio-nombre-edit, .socio-rut-edit, .socio-porcentaje-edit').forEach(el => el.style.display = 'inline');
+            row.querySelector('.edit-btn').style.display = 'none';
+            row.querySelector('.save-btn').style.display = 'inline';
+            row.querySelector('.cancel-btn').style.display = 'inline';
+        };
+
+        // Función para guardar los cambios de un socio
+        window.guardarSocio = async function(id) {
+            const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+            const nombre = row.querySelector('.socio-nombre-edit').value;
+            const rut = row.querySelector('.socio-rut-edit').value;
+            const porcentaje = row.querySelector('.socio-porcentaje-edit').value;
+
+            try {
+                const response = await fetch(`/socios/editar/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre, rut, porcentaje }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    // Actualizar la tabla
+                    row.querySelector('.socio-nombre').textContent = nombre;
+                    row.querySelector('.socio-rut').textContent = rut;
+                    row.querySelector('.socio-porcentaje').textContent = porcentaje + '%';
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                console.error('Error al guardar los cambios del socio:', error);
+                alert('Hubo un error al guardar los cambios');
+            } finally {
+                row.querySelectorAll('.socio-nombre, .socio-rut, .socio-porcentaje').forEach(el => el.style.display = 'inline');
+                row.querySelectorAll('.socio-nombre-edit, .socio-rut-edit, .socio-porcentaje-edit').forEach(el => el.style.display = 'none');
+                row.querySelector('.edit-btn').style.display = 'inline';
+                row.querySelector('.save-btn').style.display = 'none';
+                row.querySelector('.cancel-btn').style.display = 'none';
+            }
+        };
+
+        // Función para cancelar la edición de un socio
+        window.cancelarEdicion = function(id) {
+            const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+            row.querySelectorAll('.socio-nombre, .socio-rut, .socio-porcentaje').forEach(el => el.style.display = 'inline');
+            row.querySelectorAll('.socio-nombre-edit, .socio-rut-edit, .socio-porcentaje-edit').forEach(el => el.style.display = 'none');
+            row.querySelector('.edit-btn').style.display = 'inline';
+            row.querySelector('.save-btn').style.display = 'none';
+            row.querySelector('.cancel-btn').style.display = 'none';
+        };
+
+        // Función para eliminar un socio
+        window.eliminarSocio = async function(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este socio?')) {
+                try {
+                    const response = await fetch(`/socios/eliminar/${id}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response.ok) {
+                        const row = document.querySelector(`#tablaSocios tr[data-id='${id}']`);
+                        row.remove();
+                    } else {
+                        const result = await response.json();
+                        alert(result.error);
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar socio:', error);
+                    alert('Hubo un error al eliminar el socio');
+                }
+            }
+        };
+    });
+</script>
+
+
+
+
+<%- include('../footer.ejs') %>

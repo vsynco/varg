@@ -1,80 +1,143 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
+const { promisify } = require('util');
+const proyectosModel = require('../models/proyectos');
 
-// Configuración de almacenamiento para multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Guardar en el directorio persistente de Render
-    cb(null, '/var/data/');
-  },
-  filename: function (req, file, cb) {
-    // Renombrar el archivo con una marca de tiempo
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-// Inicializar multer con la configuración de almacenamiento
-const upload = multer({ storage: storage }).single('file');
-
-// Función para mostrar la vista de subir archivo
-exports.mostrarFormularioSubida = (req, res) => {
-  fs.readdir('/var/data/', (err, files) => {
-    if (err) {
+async function mostrarFormularioSubida(req, res) {
+  try {
+      const files = await fs.readdir('/var/data/');
+      res.render('secciones/upload', { files, message: '' });
+  } catch (err) {
       console.error('Error al leer el directorio:', err);
-      return res.status(500).send('Error al leer el directorio.');
-    }
-    // Renderizar la vista con la lista de archivos y un mensaje vacío
-    res.render('secciones/upload', { files, message: '' });
-  });
-};
+      res.status(500).send('Error al leer el directorio.');
+  }
+}
 
-// Función para procesar la subida de archivo
-exports.subirArchivo = (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      console.error('Error al subir el archivo:', err);
-      return res.status(500).send('Error al subir el archivo. Detalles: ' + err.message);
-    }
-    if (!req.file) {
-      return res.status(400).send('No se ha subido ningún archivo.');
-    }
-    // Leer los archivos del directorio después de la subida
-    fs.readdir('/var/data/', (err, files) => {
-      if (err) {
-        console.error('Error al leer el directorio:', err);
-        return res.status(500).send('Error al leer el directorio.');
-      }
-      // Renderizar la vista con la lista de archivos y el mensaje de subida
-      res.render('secciones/upload', { 
-        message: `Archivo subido: ${req.file.filename}`,
-        files
-      });
+
+
+
+async function subirArchivoGeneral(req, res) {
+    const destinationPath = '/var/data/';
+
+    const storage = multer.diskStorage({
+        destination: async function (req, file, cb) {
+            try {
+                await fs.mkdir(destinationPath, { recursive: true });
+                cb(null, destinationPath);
+            } catch (err) {
+                cb(err);
+            }
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + path.extname(file.originalname));
+        }
     });
-  });
-};
 
-exports.eliminarArchivo = (req, res) => {
+    const upload = promisify(multer({ storage: storage }).single('file'));
+
+    try {
+        await upload(req, res);
+
+        if (!req.file) {
+            return res.status(400).send('No se ha subido ningún archivo.');
+        }
+
+        const files = await fs.readdir(destinationPath);
+        res.json({ 
+            message: `Archivo subido: ${req.file.filename}`,
+            files
+        });
+    } catch (err) {
+        console.error('Error al subir el archivo:', err);
+        res.status(500).send('Error al subir el archivo. Detalles: ' + err.message);
+    }
+}
+async function subirProyectoFoto(req, res) {
+  const storage = multer.diskStorage({
+      destination: async function (req, file, cb) {
+          const proyectoId = req.body.proyecto_id;
+          if (!proyectoId) {
+              return cb(new Error('No se proporcionó el ID del proyecto.'));
+          }
+          const destinationPath = `/var/data/proyectos/${proyectoId}/foto`;
+          try {
+              await fs.mkdir(destinationPath, { recursive: true });
+              cb(null, destinationPath);
+          } catch (err) {
+              cb(err);
+          }
+      },
+      filename: function (req, file, cb) {
+          cb(null, Date.now() + path.extname(file.originalname));
+      }
+  });
+
+  const upload = multer({ storage: storage }).fields([
+      { name: 'file', maxCount: 1 },
+      { name: 'proyecto_id', maxCount: 1 }
+  ]);
+
+  upload(req, res, async function(err) {
+      if (err instanceof multer.MulterError) {
+          return res.status(500).send('Error de Multer al subir archivo: ' + err.message);
+      } else if (err) {
+          return res.status(500).send('Error desconocido al subir archivo: ' + err.message);
+      }
+
+      if (!req.files || !req.files['file']) {
+          return res.status(400).send('No se ha subido ningún archivo.');
+      }
+
+      const proyectoId = req.body.proyecto_id;
+      if (!proyectoId) {
+          return res.status(400).send('No se proporcionó el ID del proyecto.');
+      }
+
+      const destinationPath = `/var/data/proyectos/${proyectoId}/foto`;
+      try {
+          // Eliminar fotos existentes
+          const files = await fs.readdir(destinationPath);
+          for (const file of files) {
+              if (file !== req.files['file'][0].filename) {
+                  await fs.unlink(path.join(destinationPath, file));
+              }
+          }
+
+          // Actualizar la foto en la base de datos
+          await proyectosModel.actualizarProyectoFoto(proyectoId, `/proyectos/${proyectoId}/foto/${req.files['file'][0].filename}`);
+          console.log('Foto subida:', req.files['file'][0].filename);
+          res.redirect('/proyectos/' + proyectoId);
+      } catch (err) {
+          console.error('Error al procesar la subida de la foto:', err);
+          res.status(500).send('Error al procesar la subida de la foto. Detalles: ' + err.message);
+      }
+  });
+}
+
+
+
+
+async function eliminarArchivo(req, res) {
     const filename = req.body.filename;
     const filePath = path.join('/var/data/', filename);
-  
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('Error al eliminar el archivo:', err);
-        return res.status(500).send('Error al eliminar el archivo. Detalles: ' + err.message);
-      }
-      // Leer los archivos del directorio después de la eliminación
-      fs.readdir('/var/data/', (err, files) => {
-        if (err) {
-          console.error('Error al leer el directorio:', err);
-          return res.status(500).send('Error al leer el directorio.');
-        }
-        // Renderizar la vista con la lista actualizada de archivos
-        res.render('secciones/upload', { 
-          message: `Archivo eliminado: ${filename}`,
-          files
+
+    try {
+        await fs.unlink(filePath);
+        const files = await fs.readdir('/var/data/');
+        res.json({ 
+            message: `Archivo eliminado: ${filename}`,
+            files
         });
-      });
-    });
-  };
-  
+    } catch (err) {
+        console.error('Error al eliminar el archivo:', err);
+        res.status(500).send('Error al eliminar el archivo. Detalles: ' + err.message);
+    }
+}
+
+module.exports = {
+    subirArchivoGeneral,
+    subirProyectoFoto,
+    eliminarArchivo,
+    mostrarFormularioSubida
+};

@@ -1,7 +1,6 @@
 <%- include('../header.ejs') %>
 
 <section id="portada" class="profile">
-    <img src="/static/imagenes/nuevo-proyecto.png" alt="Nuevo Proyecto" class="profile-image">
     <div class="profile-text">
         <h1><%= proyecto ? 'Editar Proyecto' : 'Nuevo Proyecto' %></h1>
         <p>Ingrese los datos del proyecto</p>
@@ -28,42 +27,56 @@
         
         <h3>Datos Básicos (Obligatorios)</h3>
         <label for="nombre">Nombre:</label>
-        <input class="mb3" type="text" id="nombre" name="nombre" value="<%= proyecto ? proyecto.nombre : '' %>" required>
+        <input class="mb3" type="text" id="nombre" name="nombre" value="" required>
+
+        <label for="nombre">Subtitulo:</label>
+        <input class="mb3" type="text" id="subtitulo" name="subtitulo" value="" required>
         
         <label for="descripcion">Descripción:</label>
-        <textarea class="mb3" id="descripcion" name="descripcion" required><%= proyecto ? proyecto.descripcion : '' %></textarea>
+        <textarea class="mb3" id="descripcion" name="descripcion" required></textarea>
+        
+        <label for="estado">Estado:</label>
+        <select class="mb3" id="estado" name="estado" required>
+            <option value="activo">Activo</option>
+            <option value="desarrollo">En Desarrollo</option>
+            <option value="secreto">Secreto</option>
+        </select>
+        
+        <label for="porcentaje_legal">Porcentaje Legal:</label>
+        <input class="mb3" type="number" id="porcentaje_legal" name="porcentaje_legal" value="" required>
+
+        <label for="porcentaje_diseno">Porcentaje Diseño:</label>
+        <input class="mb3" type="number" id="porcentaje_diseno" name="porcentaje_diseno" value="" required>
+
+        <label for="porcentaje_codigo">Porcentaje Codigo:</label>
+        <input class="mb3" type="number" id="porcentaje_codigo" name="porcentaje_codigo" value="" required>
+
         
         <h3>Datos Adicionales (Opcionales)</h3>
-        <label for="sitioWeb">Sitio Web:</label>
-        <input class="mb3" type="url" id="sitioWeb" name="sitioWeb" value="<%= proyecto ? proyecto.sitioWeb : '' %>">
-        
-        <label for="grupoWhatsapp">Grupo de WhatsApp:</label>
-        <input class="mb3" type="url" id="grupoWhatsapp" name="grupoWhatsapp" value="<%= proyecto ? proyecto.grupoWhatsapp : '' %>">
-        
         <label for="sociedad">Sociedad:</label>
-        <input class="mb3" type="text" id="sociedad" name="sociedad" value="<%= proyecto ? proyecto.sociedad : '' %>">
+        <input class="mb3" type="text" id="sociedad" name="sociedad" value="">
         
         <label for="nombreFantasia">Nombre de Fantasía:</label>
-        <input class="mb3" type="text" id="nombreFantasia" name="nombreFantasia" value="<%= proyecto ? proyecto.nombreFantasia : '' %>">
+        <input class="mb3" type="text" id="nombreFantasia" name="nombreFantasia" value="">
         
         <label for="rut">RUT:</label>
-        <input class="mb3" type="text" id="rut" name="rut" value="<%= proyecto ? proyecto.rut : '' %>">
+        <input class="mb3" type="text" id="rut" name="rut" value="">
         
         <label for="domicilio">Domicilio:</label>
-        <input class="mb3" type="text" id="domicilio" name="domicilio" value="<%= proyecto ? proyecto.domicilio : '' %>">
+        <input class="mb3" type="text" id="domicilio" name="domicilio" value="">
         
         <label for="ceo">CEO:</label>
-        <input class="mb3" type="text" id="ceo" name="ceo" value="<%= proyecto ? proyecto.ceo : '' %>">
+        <input class="mb3" type="text" id="ceo" name="ceo" value="">
         
         <h3>Información Bancaria (Opcional)</h3>
         <label for="bancoNombre">Nombre del Banco:</label>
-        <input class="mb3" type="text" id="bancoNombre" name="bancoNombre" value="<%= proyecto && proyecto.banco_nombre ? proyecto.banco_nombre : '' %>">
+        <input class="mb3" type="text" id="bancoNombre" name="bancoNombre" value="">
         
         <label for="bancoTipoCuenta">Tipo de Cuenta:</label>
-        <input class="mb3" type="text" id="bancoTipoCuenta" name="bancoTipoCuenta" value="<%= proyecto && proyecto.banco_tipo_cuenta ? proyecto.banco_tipo_cuenta : '' %>">
+        <input class="mb3" type="text" id="bancoTipoCuenta" name="bancoTipoCuenta" value="">
         
         <label for="bancoNumeroCuenta">Número de Cuenta:</label>
-        <input class="mb3" type="text" id="bancoNumeroCuenta" name="bancoNumeroCuenta" value="<%= proyecto && proyecto.banco_numero_cuenta ? proyecto.banco_numero_cuenta : '' %>">
+        <input class="mb3" type="text" id="bancoNumeroCuenta" name="bancoNumeroCuenta" value="">
         
         <button type="submit"><%= proyecto ? 'Actualizar' : 'Crear' %> Proyecto</button>
     </form>

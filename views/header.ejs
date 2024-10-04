@@ -20,11 +20,6 @@
             font-size: 14px;
             line-height: 1.6;
         }
-        .a-link {
-  display: block; /* Asegura que el enlace abarque todo el div */
-  text-decoration: none; /* Evita el subrayado */
-  color: inherit; /* Hace que el color del texto sea el mismo que el div */
-}
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -59,20 +54,12 @@
             color: #8be9fd;
             text-decoration: none;
         }
-        td {
-            padding: 10px;
-            border: 1px solid #6272a4;
-        }
-        th {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #6272a4;
-            background-color: #44475a;
-        }
+
+        
         .profile {
             display: flex;
             align-items: center;
-            margin: 40px 0;
+            margin: 20px 0;
         }
         .profile-image {
             width: 70px;
@@ -98,10 +85,8 @@
         }
         .project {
             
-            background-color: #44475a;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             border: 1px solid #44475a;
         }
 .display-none {
@@ -171,15 +156,6 @@
             background-color: #ff79c6;
             height: 100%;
         }
-        .project-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: #8be9fd;
-            text-decoration: none;
-        }
-        .project-link:hover {
-            color: #f1fa8c;
-        }
         .collaborations {
             display: flex;
             flex-direction: column;
@@ -213,80 +189,124 @@
             color: #f1fa8c;
         }
 
+        .input-full { 
+        width: 100%;
+        box-sizing: border-box; 
+        }
+
+        .form-full input,
+        .form-full textarea {
+        width: 100%;
+        box-sizing: border-box;
+        }
+
+        /* Textarea No Resize */
+        .textarea-no-resize {
+            resize: none;
+        }
+
+
+        .mb3 {
+            margin-bottom: 1rem;
+        }
+
+        .mt3 {
+            margin-top: 1rem;
+        }
+
+
+        /* Revisar hacia arriba */
+
+        hr { 
+            margin: 20px 0;
+            border: 0;
+            height: 6px; 
+            background-image: radial-gradient(circle, #ee81c3 1px, transparent 1px); 
+            background-size: 10px 10px; 
+        }
+
         h1,h2,h3,h4,h5,h6 {
             color: #ff79c6;
             font-weight: 400;
             font-size: 14px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
+
+        td {
+            padding: 10px;
+            border: 1px solid #6272a4;
+        }
+        th {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #6272a4;
+            background-color: #44475a;
+        }
+
         section {
             margin-bottom: 30px;
         }
 
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
+        label {
+            margin-bottom: 0.5rem;
+            color: #bd93f9;
+        }
 
-        
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 0.5rem;
-    color: #bd93f9;
-}
-
-input[type="text"],
-input[type="url"],
-input[type="number"],
-textarea {
-    padding: 0.5rem;
-    margin: 0px;
-    border: 1px solid #6272a4;
-    border-radius: 3px;
-    background-color: #282a36;
-    color: #f8f8f2;
-}
-
-textarea {
-    height: 100px;
-    resize: vertical;
-}
-
-button[type="submit"] {
+        button[type="submit"] {
             color: #8be9fd;
             text-decoration: none;
-    padding: 0.75rem;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-family: 'Fira Code', monospace;
-}
-
-button[type="submit"]:hover {
-    color: #f1fa8c;
-}
+            padding: 0.5rem;
+            background-color: transparent;
+            border: 1px solid #8be9fd;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            margin-top: 1rem;
+        }
 
 
-a {
-            color: #8be9fd;
-            text-decoration: none;
-}
-
-
-a:hover {
+        button[type="submit"]:hover {
             color: #f1fa8c;
         }
 
-.mb3 {
-    margin-bottom: 1rem;
-}
-        
-    </style>
+        input[type="text"],
+        input[type="url"],
+        input[type="number"],
+        input[type="date"],
+        textarea,select {
+            padding: 0.5rem;
+            margin: 0px;
+            border: 1px solid #6272a4;
+            border-radius: 3px;
+            background-color: #282a36;
+            color: #f8f8f2;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        a {
+            color: #a1e7fa;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #f1fa8c;
+        }
+
+</style>
+
 </head>
 <body>
     <nav>
@@ -294,6 +314,9 @@ a:hover {
             <ul>
                 <li><a href="/">Portada</a></li>
                 <li><a href="/blog">Blog</a></li>
+                <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
+                <li><a href="/rondas">Rondas</a></li>
+                <% } %>
                 <li><a href="/contacto">Contacto</a></li>
             </ul>
             <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>

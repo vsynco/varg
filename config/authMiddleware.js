@@ -8,11 +8,12 @@ function Authenticated(req, res, next) {
 }
 
 async function Admin(req, res, next) {
-  const user = req.session.user.administrador;
-  if (user === true) {
+  const user = req.session.user;
+  if (user && user.administrador === 1) {
     // Si el usuario está autenticado y es un administrador, continúa con la solicitud
     return next();
   }
+  // Si no es administrador o no está autenticado, redirige a la página principal
   res.redirect("/");
 }
 

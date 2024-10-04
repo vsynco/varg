@@ -1,0 +1,172 @@
+<%- include('../header.ejs') %>
+
+<section id="portada" class="profile" style="position: relative;">
+    <div class="profile-text">
+        <h1>Crear ronda de Inversión</h1>
+        <p>Añadir nueva ronda</p>
+    </div>
+</section>
+
+<section id="menu-proyectos">
+    <ol style="list-style-type: none; padding: 0;">
+        <li style="display: inline;">
+            <a href="/" style="color: #8be9fd; text-decoration: none;">Portada</a>
+            <span style="color: #6272a4; margin: 0 5px;"> > </span>
+        </li>
+        <li style="display: inline;">
+            <a href="/rondas" style="color: #8be9fd; text-decoration: none;">Rondas de Inversión</a>
+            <span style="color: #6272a4; margin: 0 5px;"> > </span>
+        </li>
+        <li style="display: inline; color: #f8f8f2;" aria-current="page">Crear Ronda</li>
+    </ol>
+</section>
+
+<style>
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .column {
+        width: 100%;
+        max-width: 45%;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input, .form-group select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+    .tramo {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .tramo input {
+        width: 48%;
+    }
+    @media (max-width: 768px) {
+        .column {
+            max-width: 100%;
+        }
+    }
+</style>
+
+<form action="/rondas/crear" method="POST" id="crearRondaForm">
+    <div class="form-container">
+        <div class="column">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="proyecto_id">Proyecto:</label>
+                <select id="proyecto_id" name="proyecto_id" required>
+                    <% proyectos.forEach(proyecto => { %>
+                        <option value="<%= proyecto.id %>"><%= proyecto.nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fechaInicio">Fecha de Inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fechaFin">Fecha de Fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" required>
+            </div>
+        </div>
+        
+        <div class="column">
+            <h3>Tramos de Inversión</h3>
+            <div id="tramos">
+                <div class="tramo">
+                    <input type="number" name="tramo_porcentaje[]" placeholder="Porcentaje" required min="0.01" max="100" step="0.01" oninput="calcularTotales()">
+                    <input type="number" name="tramo_valor[]" placeholder="Valor en CLP" required min="1" oninput="calcularTotales()">
+                    <input type="text" name="cupon[]" placeholder="Cupón">
+                </div>
+            </div>
+            
+            <button type="button" onclick="agregarTramo()">Agregar otro tramo</button>
+            
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="porcentajeTotal">Porcentaje Total:</label>
+                <input type="number" id="porcentajeTotal" name="porcentajeTotal" readonly>
+            </div>
+            <div class="form-group">
+                <label for="valorTotal">Valor Total (CLP):</label>
+                <input type="number" id="valorTotal" name="valorTotal" readonly>
+            </div>
+            
+        </div>
+    </div>
+    
+    <input type="hidden" name="tramos" id="tramosJSON">
+    
+    <button type="submit" style="margin-top: 20px;">Crear Ronda</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('fechaInicio').value = today;
+    });
+
+    let tramoCount = 1;
+
+    function agregarTramo() {
+        const tramosDiv = document.getElementById('tramos');
+        const nuevoTramo = document.createElement('div');
+        nuevoTramo.className = 'tramo';
+        nuevoTramo.innerHTML = `
+            <input type="number" name="tramo_porcentaje[]" placeholder="Porcentaje" required min="0.01" max="100" step="0.01" oninput="calcularTotales()">
+            <input type="number" name="tramo_valor[]" placeholder="Valor en CLP" required min="1" oninput="calcularTotales()">
+            <input type="text" name="cupon[]" placeholder="Cupón">
+        `;
+        tramosDiv.appendChild(nuevoTramo);
+        tramoCount++;
+    }
+
+    function calcularTotales() {
+        const porcentajes = document.getElementsByName('tramo_porcentaje[]');
+        const valores = document.getElementsByName('tramo_valor[]');
+        let totalPorcentaje = 0;
+        let totalValor = 0;
+        for (let i = 0; i < porcentajes.length; i++) {
+            totalPorcentaje += parseFloat(porcentajes[i].value) || 0;
+            totalValor += parseFloat(valores[i].value) || 0;
+        }
+        document.getElementById('porcentajeTotal').value = totalPorcentaje.toFixed(2);
+        document.getElementById('valorTotal').value = totalValor.toFixed(2);
+    }
+
+    document.getElementById('crearRondaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const tramos = [];
+        const porcentajes = document.getElementsByName('tramo_porcentaje[]');
+        const valores = document.getElementsByName('tramo_valor[]');
+        const cupones = document.getElementsByName('cupon[]');
+        for (let i = 0; i < porcentajes.length; i++) {
+            tramos.push({
+                porcentaje: parseFloat(porcentajes[i].value),
+                valor: parseFloat(valores[i].value),
+                cupon: cupones[i].value.trim() || null  // Incluimos el cupón, si está vacío, se envía null
+            });
+        }
+        document.getElementById('tramosJSON').value = JSON.stringify(tramos);
+        this.submit();
+    });
+</script>
+
+
+<%- include('../footer.ejs') %>

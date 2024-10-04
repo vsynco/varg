@@ -19,6 +19,7 @@ app.use(cookieSession({
 
 app.use((req, res, next) => {
   user_sesion = req.session.user;
+
   next();
 });
 

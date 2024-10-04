@@ -1,249 +1,76 @@
 <%- include('../header.ejs') %>
 
         <section id="portada" class="profile">
-            <img src="/static/imagenes/foto.png" alt="Mi foto de perfil" class="profile-image">
+            <img src="/static/imagenes/foto.png" alt="Varg" class="profile-image">
             <div class="profile-text">
                 <h1>Juan Pablo Vargas</h1>
                 <p>Aceleración de Negocios, Abogado y Desarrollador JS/NodeJS.</p>
             </div>
         </section>
 
-        <section id="proyectos-socio" class="projects-section">
-            <div class="projects-header" style="display: flex; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin-right: 20px;">Proyectos</h2>
-                <div class="filter-options" style="display: flex; gap: 10px;">
-                    <button class="filter-btn active" data-filter="active" style="background-color: #6272a4; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Activos</button>
-                    <button class="filter-btn" data-filter="development" style="background-color: #44475a; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Desarrollo</button>
-                    <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
-                        <button class="filter-btn" data-filter="secret" style="background-color: #44475a; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Secretos</button>
-                    <% } %>
-                    <button class="filter-btn" data-filter="all" style="background-color: #44475a; color: #f8f8f2; border: none; padding: 5px 10px; cursor: pointer; transition: background-color 0.3s;">Todos</button>
-               
-               
-               
+        <hr>
+
+        <section id="menu-proyectos">
+
+            <ol id="filter-list" style="margin-top:-10px; list-style-type: none; padding: 0;">
+
+                <li style="display: inline;">
+                    Proyectos
+                    <span style="color: #6272a4; margin: 0 5px;"> > </span>
+                </li>
+
+                <li style="display: inline;"></li>
+                    <a href="#" class="filter-link" data-filter="activo" style="color: #f1fa8c; text-decoration: none;">[ Activos ]</a>
+                </li>
+
+                <li style="display: inline;"></li>
+                    <a href="#" class="filter-link" data-filter="desarrollo">[ Desarrollo ]</a>
+                </li>
+
+                <li style="display: inline;"></li>
+                    <a href="#" class="filter-link" data-filter="secreto">[ Secretos ]</a>
+                </li>
             
-               
-               
-                </div>
-            </div>
+                <li style="display: inline;"></li>
+                    <a href="#" class="filter-link" data-filter="all">[ Todos ]</a>
+                </li>
+
+            </ol>
+
+        </section>
+        
+        <section id="proyectos" class="projects-section">
             
             <div class="projects">
                 
-                    <div class="project active display-none">
+            <% proyectos.forEach(function(proyecto) { %>
+                <div class="project <%= proyecto.estado %> display-none">
+
                     <div class="project-header">
-                        <img src="/static/imagenes/armis.png" alt="ARMIS" class="project-image">
-                        <div class="project-title">
-                            <h3>ARMIS</h3>
-                            <p class="project-rights">Estado: 100%</p>
-                        </div>
-                    </div>
-                    <p>Soluciones Legales para comunidades.</p>
-                    <div class="skills">
-                        <div class="skill">
-                            <span class="skill-name">Legal</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 50%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Diseño</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Código</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                    </div>
-                    <a href="/armis" class="project-link">Información de Proyecto</a>
-                </div>
+                            <img src="<%= proyecto.foto_perfil_url ? ('/archivos/' + proyecto.foto_perfil_url) : '/static/imagenes/no.png' %>"
+                            alt="<%= proyecto.nombre %>" class="project-image">
 
-                <div class="project active display-none">
-                    <div class="project-header">
-                        <img src="/static/imagenes/auda.png" alt="AUDA" class="project-image">
-                        <div class="project-title">
-                            <h3>AUDA</h3>
-                            <p class="project-rights">Estado: 100%</p>
-                        </div>
+                                <div class="project-title">
+                                    <h3><%= proyecto.nombre %></h3>
+                                    <p class="project-rights">ID: <%= proyecto.id %></p>
+                                </div>
                     </div>
-                    <p>Auditoría Especialista de Comunidades.</p>
-                    <div class="skills">
-                        <div class="skill">
-                            <span class="skill-name">Legal</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Diseño</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Código</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                    </div>
-                    <a href="/auda" class="project-link">Información de Proyecto</a>
-                </div>
-
-
+                    
+                    <p><%= proyecto.subtitulo %></p>
+                    
+                    <a href="/proyectos/<%= proyecto.id %>" class="project-link">Información de Proyecto</a>
                 
-
-                <div class="project active display-none">
-                    <div class="project-header">
-                        <img src="/static/imagenes/synco.png" alt="SYNCO" class="project-image">
-                        <div class="project-title">
-                            <h3>SYNCO</h3>
-                            <p class="project-rights">Estado: 99%</p>
-                        </div>
-                    </div>
-                    <p>Aceleración Tecnológica de Negocios.</p>
-                    <div class="skills">
-                        <div class="skill">
-                            <span class="skill-name">Legal</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Diseño</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 50%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Código</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                    </div>
-                    <a href="/synco" class="project-link">Información de Proyecto</a>
                 </div>
-
-
-<div class="project development display-none">
-    <div class="project-header">
-        <img src="/static/imagenes/puig.png" alt="PUIG" class="project-image">
-        <div class="project-title">
-            <h3>PUIG</h3>
-            <p class="project-rights">Estado: 80%</p>
-        </div>
-    </div>
-    <p>Soporte Laboral para empresas.</p>
-    <div class="skills">
-        <div class="skill">
-            <span class="skill-name">Legal</span>
-            <div class="skill-bar"><div class="skill-level" style="width: 50%;"></div></div>
-        </div>
-        <div class="skill">
-            <span class="skill-name">Diseño</span>
-            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-        </div>
-        <div class="skill">
-            <span class="skill-name">Código</span>
-            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-        </div>
-    </div>
-    <a href="/puig" class="project-link">Información de Proyecto</a>
-</div>
-
-
-                <div class="project development display-none">
-                    <div class="project-header">
-                        <img src="/static/imagenes/no.png" alt="CLUBON" class="project-image">
-                        <div class="project-title">
-                            <h3>CLUB/ON</h3>
-                            <p class="project-rights">Estado: 70%</p>
-                        </div>
-                    </div>
-                    <p>Plataforma de gestión de membresías.</p>
-                    <div class="skills">
-                        <div class="skill">
-                            <span class="skill-name">Legal</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Diseño</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Código</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                    </div>
-                    <a href="/clubon" class="project-link">Información de Proyecto</a>
-                </div>
-
-
-
-
-
-                <div class="project development display-none">
-                    <div class="project-header">
-                        <img src="/static/imagenes/buzo.png" alt="BUZO" class="project-image">
-                        <div class="project-title">
-                            <h3>BUZO</h3>
-                            <p class="project-rights">Estado: 20%</p>
-                        </div>
-                    </div>
-                    <p>Plataforma para la industria Salmonera</p>
-                    <div class="skills">
-                        <div class="skill">
-                            <span class="skill-name">Legal</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Diseño</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                        <div class="skill">
-                            <span class="skill-name">Código</span>
-                            <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                        </div>
-                    </div>
-                    <a href="/buzo" class="project-link">Información de Proyecto</a>
-                </div>
-
-
-
-
-
-                <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
-                    <div class="project secret display-none">
-                        <div class="project-header">
-                            <img src="/static/imagenes/jaskier.jpg" alt="BUZO" class="project-image">
-                            <div class="project-title">
-                                <h3>PROYECTO JASKIER</h3>
-                                <p class="project-rights">Estado: 75%</p>
-                            </div>
-                        </div>
-                        <p>Plataforma tipo Onlyfans</p>
-                        <div class="skills">
-                            <div class="skill">
-                                <span class="skill-name">Legal</span>
-                                <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="skill">
-                                <span class="skill-name">Diseño</span>
-                                <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                            </div>
-                            <div class="skill">
-                                <span class="skill-name">Código</span>
-                                <div class="skill-bar"><div class="skill-level" style="width: 100%;"></div></div>
-                            </div>
-                        </div>
-                        <a href="/jaskier" class="project-link">Información de Proyecto</a>
-                    </div>
-                    <% } %>
                 
-
-
-
-
+                <% }); %>
 
             </div>
+
         </section>
-
-
-
-
-
-
-
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const filterButtons = document.querySelectorAll('.filter-btn');
+                const filterLinks = document.querySelectorAll('.filter-link');
                 const projects = document.querySelectorAll('.project');
             
                 function filterProjects(filter) {
@@ -252,26 +79,27 @@
                     });
                 }
             
-                filterButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const filter = button.getAttribute('data-filter');
+                filterLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const filter = link.getAttribute('data-filter');
                         
-                        filterButtons.forEach(btn => {
-                            btn.classList.remove('active');
-                            btn.style.backgroundColor = '#44475a';
+                        filterLinks.forEach(l => {
+                            l.classList.remove('activo');
+                            l.style.color = '#a1e7fa';
                         });
                         
-                        button.classList.add('active');
-                        button.style.backgroundColor = '#6272a4';
+                        link.classList.add('activo');
+                        link.style.color = '#f1fa8c';
             
                         filterProjects(filter);
                     });
                 });
             
                 // Filtrar proyectos activos por defecto
-                filterProjects('active');
+                filterProjects('activo');
+                document.querySelector('[data-filter="activo"]').classList.add('activo');
             });
             </script>
             
-
 <%- include('../footer.ejs') %>
