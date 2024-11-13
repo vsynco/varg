@@ -3,432 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ImageTube Mejorado</title>
+    <title>Portal de Imágenes</title>
     <style>
-        :root {
-            --background-color: #101012;
-            --card-background: #1a1a1a;
-            --text-color: #e0e0e0;
-            --accent-color: #8e7752;
-            --user-name-color: #8e7754;
-            --search-text-color: #a0a0a0;
-        }
-
         body, html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            background-color: #f7f7f7;
+            color: #333;
+            height: 100%;
         }
-
         header {
-            background-color: var(--background-color);
-            padding: 15px 30px;
+            background-color: #f0c0da;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 10px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--accent-color);
+            height: 50px;
         }
-
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 20px;
+        }
         .logo {
-            color: var(--accent-color);
+            color: #fff;
             font-size: 24px;
             font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
-
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            display: flex;
+        }
         .search-bar input {
+            width: 70%;
+            padding: 8px;
+            border: none;
+            background-color: #fff;
+            border-radius: 20px 0 0 20px;
+        }
+        .search-bar button {
             padding: 8px 15px;
-            width: 300px;
-            background-color: var(--card-background);
-            border: 1px solid var(--accent-color);
-            color: var(--search-text-color);
+            background-color: #f7e99c;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: #f0e68c;
+        }
+        .content {
+            display: flex;
+            height: calc(100% - 70px);
+        }
+        .sidebar {
+            width: 200px;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #fff;
+            border-right: 1px solid #eee;
+        }
+        .sidebar h3 {
+            color: #c5a57b;
+            border-bottom: 2px solid #f0c0da;
+            padding-bottom: 10px;
+            font-size: 16px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
             font-size: 14px;
         }
-
-        .user-icon {
-            color: var(--accent-color);
-            font-size: 24px;
+        .sidebar a:hover {
+            color: #f0c0da;
         }
-
-        main {
-            padding: 30px;
-        }
-
-        .tags {
+        .main-content {
+            flex-grow: 1;
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 10px;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: #fff;
         }
-
+        .tags {
+            padding: 10px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+        }
         .tag {
-            background-color: var(--card-background);
-            color: var(--text-color);
+            display: inline-block;
+            background-color: #f0c0da;
+            color: #fff;
             padding: 5px 10px;
             border-radius: 15px;
-            font-size: 14px;
-            white-space: nowrap;
+            margin-right: 10px;
+            font-size: 12px;
         }
-
         .image-grid {
+            overflow-y: auto;
+            padding: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            background-color: #f9f9f9;
         }
-
         .image-card {
-            background-color: var(--card-background);
-            border-radius: 8px;
+            background-color: #fff;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-
-        .image-container {
-            position: relative;
-            border: 1px solid transparent;
-            transition: border-color 0.3s ease;
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
-
-        .image-container:hover {
-            border-color: var(--accent-color);
-        }
-
-        .image-card img.main-image {
+        .image-card img {
             width: 100%;
             height: 180px;
             object-fit: cover;
-            display: block;
         }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
+        .image-info {
+            padding: 15px;
         }
-
-        .user-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-top: -30px;
-            margin-left: 4px;
-        }
-
-        .user-name {
-            color: var(--user-name-color);
+        .image-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
             font-size: 14px;
         }
-
-        .image-info {
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .image-author {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
         }
-
-        .image-views {
-            color: var(--text-color);
-            font-size: 12px;
+        .image-stats {
+            font-size: 0.8em;
+            color: #999;
         }
-
+        .user-actions a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            background-color: #e1bc8d;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        .user-actions a:hover {
+            background-color: #c5a57b;
+        }
         @media (max-width: 768px) {
-            .search-bar input {
-                width: 200px;
+            .sidebar {
+                display: none;
             }
             .image-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">ImageTube</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar">
+        <div class="header-content">
+            <div class="logo">ImagePortal</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar imágenes...">
+                <button>Buscar</button>
+            </div>
+            <div class="user-actions">
+                <a href="#">Subir</a>
+                <a href="#">Iniciar sesión</a>
+            </div>
         </div>
-        <div class="user-icon">👤</div>
     </header>
 
-    <main>
-        <div class="tags">
-            <span class="tag">Tendencias</span>
-            <span class="tag">Naturaleza</span>
-            <span class="tag">Arte</span>
-            <span class="tag">Tecnología</span>
-            <span class="tag">Viajes</span>
-            <span class="tag">Comida</span>
-        </div>
+    <div class="content">
+        <aside class="sidebar">
+            <h3>Categorías</h3>
+            <ul>
+                <li><a href="#">Naturaleza</a></li>
+                <li><a href="#">Urbano</a></li>
+                <li><a href="#">Retratos</a></li>
+                <li><a href="#">Abstracto</a></li>
+                <li><a href="#">Animales</a></li>
+            </ul>
+            <h3>Suscripciones</h3>
+            <ul>
+                <li><a href="#">NatureLover</a></li>
+                <li><a href="#">CityExplorer</a></li>
+                <li><a href="#">FlowerPower</a></li>
+            </ul>
+            <h3>Configuración</h3>
+            <ul>
+                <li><a href="#">Perfil</a></li>
+                <li><a href="#">Notificaciones</a></li>
+                <li><a href="#">Privacidad</a></li>
+            </ul>
+        </aside>
 
-        <div class="image-grid">
-            
-            
-            <div class="image-card image-container">
-                <div>
-                    <img class="main-image" src="/static/imagenes/only/1.jpg" alt="Imagen 1">
+        <main class="main-content">
+            <div class="tags">
+                <span class="tag">Tendencias</span>
+                <span class="tag">Paisajes</span>
+                <span class="tag">Retratos</span>
+                <span class="tag">Arquitectura</span>
+                <span class="tag">Vida silvestre</span>
+            </div>
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="/api/placeholder/250/180" alt="Paisaje montañoso">
+                    <div class="image-info">
+                        <div class="image-title">Paisaje montañoso</div>
+                        <div class="image-author">por NatureLover</div>
+                        <div class="image-stats">1.2M vistas · 50K me gusta</div>
+                    </div>
                 </div>
-                <div class="image-info">
-                    <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                    <span class="image-views">ArtisticSoul</span>
+                <div class="image-card">
+                    <img src="/api/placeholder/250/180" alt="Retrato urbano">
+                    <div class="image-info">
+                        <div class="image-title">Retrato urbano</div>
+                        <div class="image-author">por CityExplorer</div>
+                        <div class="image-stats">800K vistas · 30K me gusta</div>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <img src="/api/placeholder/250/180" alt="Macro de flor">
+                    <div class="image-info">
+                        <div class="image-title">Macro de flor</div>
+                        <div class="image-author">por FlowerPower</div>
+                        <div class="image-stats">500K vistas · 25K me gusta</div>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <img src="/api/placeholder/250/180" alt="Atardecer en la playa">
+                    <div class="image-info">
+                        <div class="image-title">Atardecer en la playa</div>
+                        <div class="image-author">por BeachLover</div>
+                        <div class="image-stats">2M vistas · 100K me gusta</div>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <img src="/api/placeholder/250/180" alt="Arquitectura moderna">
+                    <div class="image-info">
+                        <div class="image-title">Arquitectura moderna</div>
+                        <div class="image-author">por UrbanArchitect</div>
+                        <div class="image-stats">1.5M vistas · 75K me gusta</div>
+                    </div>
+                </div>
+                <div class="image-card">
+                    <img src="/api/placeholder/250/180" alt="Vida silvestre">
+                    <div class="image-info">
+                        <div class="image-title">Vida silvestre</div>
+                        <div class="image-author">por WildlifePhotographer</div>
+                        <div class="image-stats">3M vistas · 150K me gusta</div>
+                    </div>
                 </div>
             </div>
-
-            <div class="image-card image-container">
-                <div>
-                    <img class="main-image" src="/static/imagenes/only/2.jpg" alt="Imagen 1">
-                </div>
-                <div class="image-info">
-                    <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                    <span class="image-views">ArtisticSoul</span>
-                </div>
-            </div>
-
-            <div class="image-card image-container">
-                <div>
-                    <img class="main-image" src="/static/imagenes/only/3.jpg" alt="Imagen 1">
-                </div>
-                <div class="image-info">
-                    <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                    <span class="image-views">ArtisticSoul</span>
-                </div>
-            </div>
-
-
-            <div class="image-card image-container">
-                <div>
-                    <img class="main-image" src="/static/imagenes/only/4.jpg" alt="Imagen 1">
-                </div>
-                <div class="image-info">
-                    <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                    <span class="image-views">ArtisticSoul</span>
-                </div>
-            </div>
-
-
-            <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/8.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/5.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/6.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/7.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/8.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/9.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/10.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/12.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/11.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/13.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/14.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/15.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/16.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/17.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/18.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/19.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/20.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-        <div class="image-card image-container">
-            <div>
-                <img class="main-image" src="/static/imagenes/only/21.jpg" alt="Imagen 1">
-            </div>
-            <div class="image-info">
-                <img class="user-avatar" src="/static/imagenes/only/foto.jpg" alt="Usuario 1">
-                <span class="image-views">ArtisticSoul</span>
-            </div>
-        </div>
-
-
-
-
-        </div>
-    </main>
+        </main>
+    </div>
 </body>
 </html>

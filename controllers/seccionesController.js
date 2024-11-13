@@ -1,15 +1,12 @@
-const proyectosModel = require("../models/proyectos");
 
 async function mostrarError(req, res, pageTitle) {
   res.redirect("/");
 }
 
 async function mostrarPortada(req, res, pageTitle) {
- const proyectos = await proyectosModel.obtenerTodosProyectos();
   try {
     res.render("secciones/portada", {
       title: pageTitle,
-      proyectos: proyectos,
     });
   } catch (error) {
     console.error("Error:", error);

@@ -4,102 +4,12 @@
             <img src="/static/imagenes/foto.png" alt="Varg" class="profile-image">
             <div class="profile-text">
                 <h1>Juan Pablo Vargas</h1>
-                <p>Aceleración de Negocios, Abogado y Desarrollador JS/NodeJS.</p>
+                <p>Legal Development.</p>
             </div>
         </section>
 
         <hr>
 
-        <section id="menu-proyectos">
-
-            <ol id="filter-list" style="margin-top:-10px; list-style-type: none; padding: 0;">
-
-                <li style="display: inline;">
-                    Proyectos
-                    <span style="color: #6272a4; margin: 0 5px;"> > </span>
-                </li>
-
-                <li style="display: inline;"></li>
-                    <a href="#" class="filter-link" data-filter="activo" style="color: #f1fa8c; text-decoration: none;">[ Activos ]</a>
-                </li>
-
-                <li style="display: inline;"></li>
-                    <a href="#" class="filter-link" data-filter="desarrollo">[ Desarrollo ]</a>
-                </li>
-
-                <li style="display: inline;"></li>
-                    <a href="#" class="filter-link" data-filter="secreto">[ Secretos ]</a>
-                </li>
-            
-                <li style="display: inline;"></li>
-                    <a href="#" class="filter-link" data-filter="all">[ Todos ]</a>
-                </li>
-
-            </ol>
-
-        </section>
         
-        <section id="proyectos" class="projects-section">
-            
-            <div class="projects">
-                
-            <% proyectos.forEach(function(proyecto) { %>
-                <div class="project <%= proyecto.estado %> display-none">
-
-                    <div class="project-header">
-                            <img src="<%= proyecto.foto_perfil_url ? ('/archivos/' + proyecto.foto_perfil_url) : '/static/imagenes/no.png' %>"
-                            alt="<%= proyecto.nombre %>" class="project-image">
-
-                                <div class="project-title">
-                                    <h3><%= proyecto.nombre %></h3>
-                                    <p class="project-rights">ID: <%= proyecto.id %></p>
-                                </div>
-                    </div>
-                    
-                    <p><%= proyecto.subtitulo %></p>
-                    
-                    <a href="/proyectos/<%= proyecto.id %>" class="project-link">Información de Proyecto</a>
-                
-                </div>
-                
-                <% }); %>
-
-            </div>
-
-        </section>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const filterLinks = document.querySelectorAll('.filter-link');
-                const projects = document.querySelectorAll('.project');
-            
-                function filterProjects(filter) {
-                    projects.forEach(project => {
-                        project.style.display = (filter === 'all' || project.classList.contains(filter)) ? 'block' : 'none';
-                    });
-                }
-            
-                filterLinks.forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const filter = link.getAttribute('data-filter');
-                        
-                        filterLinks.forEach(l => {
-                            l.classList.remove('activo');
-                            l.style.color = '#a1e7fa';
-                        });
-                        
-                        link.classList.add('activo');
-                        link.style.color = '#f1fa8c';
-            
-                        filterProjects(filter);
-                    });
-                });
-            
-                // Filtrar proyectos activos por defecto
-                filterProjects('activo');
-                document.querySelector('[data-filter="activo"]').classList.add('activo');
-            });
-            </script>
             
 <%- include('../footer.ejs') %>
