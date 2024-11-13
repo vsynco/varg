@@ -316,9 +316,9 @@
                 <li><a href="/blog">Blog</a></li>
                 <li><a href="/contacto">Contacto</a></li>
             </ul>
-            <% if (typeof user_sesion !== 'undefined' && user_sesion) { %>
+            <% if (currentUser) { %>
                 <div class="access-link">
-                    <span style="color: #f8f8f2; margin-right: 10px;"><%= user_sesion.nombre %></span>
+                    <span style="color: #f8f8f2; margin-right: 10px;"><%= currentUser.nombre %></span>
                     <a href="/perfil" style="color: #8be9fd; text-decoration: none; margin-right: 10px;">Perfil</a>
                     <a href="/salir" style="color: #ff5555; text-decoration: none;">Salir</a>
                 </div>

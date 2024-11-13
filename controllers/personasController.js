@@ -1,8 +1,6 @@
 const personas = require("../models/personas");
 const https = require("https");
 const bcrypt = require("bcrypt");
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.GOOGLE_CALLBACK);
 
 async function mostrarFormularioDeAcceso(req, res, pageTitle) {
     res.render("acceso/acceso_login", {
@@ -13,7 +11,8 @@ async function mostrarFormularioDeAcceso(req, res, pageTitle) {
   
   async function mostrarPerfil(req, res, pageTitle) {
     try {
-      const usuario = await personas.obtenerPersonaId(user_sesion.id);
+      const usuario = await personas.obtenerPersonaId(req.session.user.id);
+      console.log(usuario)
       res.render("acceso/acceso_perfil", {
         title: pageTitle,
         usuario,
@@ -69,7 +68,7 @@ async function iniciarSesion(req, res) {
 }
 
   async function registrarPersona(req, res) {
-    let { nombre, email, contrasena, telefono, afiliado } = req.body;
+    let { nombre, email, contrasena, telefono } = req.body;
 
     // Convertir email a minúsculas
     email = email.toLowerCase();
@@ -87,7 +86,7 @@ async function iniciarSesion(req, res) {
     const hashedPassword = await bcrypt.hash(contrasena, 10);
 
     // Insertar nueva persona
-    const userId = await personas.insertarPersona({ nombre, email, contrasena: hashedPassword, telefono, afiliado });
+    const userId = await personas.insertarPersona({ nombre, email, contrasena: hashedPassword, telefono });
 
     // Crear sesión del usuario
     req.session.user = { id: userId };
