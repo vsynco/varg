@@ -36,6 +36,19 @@ async function mostrarBlog(req, res, pageTitle) {
   }
 }
 
+
+
+async function mostrarMap(req, res, pageTitle) {
+  try {
+    res.render("secciones/map", {
+      title: pageTitle,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Hubo un error al cargar sección");
+  }
+}
+
 async function mostrarOnly(req, res, pageTitle) {
   try {
     res.render("secciones/only", {
@@ -52,5 +65,6 @@ module.exports = {
   mostrarPortada,
   mostrarOnly,
   mostrarContacto,
-  mostrarBlog
+  mostrarBlog,
+  mostrarMap
 };

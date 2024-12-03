@@ -16,10 +16,13 @@ router.use((req, res, next) => {
 // Autenticación
 const personasController  = require("./controllers/personasController");
 const seccionesController = require("./controllers/seccionesController");
+const apiController = require("./controllers/apiController");
 // ACCESO
 router.get("/", seccionesController.mostrarPortada);
 router.get("/contacto", seccionesController.mostrarContacto);
 router.get("/blog", seccionesController.mostrarBlog);
+router.get("/map", seccionesController.mostrarMap);
+router.get("/api/abo", apiController.recibirProspecto);
 
 
 router.get("/acceso", (req, res) => {
