@@ -18,7 +18,7 @@ async function recibirProspecto(req, res) {
       // Inserta en la base de datos
       await apiModel.agregarProspecto({ nombre, correo, telefono, mensaje });
   
-      res.status(200).send("Prospecto guardado con éxito");
+      res.redirect(303, 'http://abo.cl/gracias.html');
     } catch (error) {
       console.error("Error al recibir prospecto:", error);
       res.status(500).send("Error interno del servidor");

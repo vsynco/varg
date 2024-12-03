@@ -22,7 +22,7 @@ router.get("/", seccionesController.mostrarPortada);
 router.get("/contacto", seccionesController.mostrarContacto);
 router.get("/blog", seccionesController.mostrarBlog);
 router.get("/map", seccionesController.mostrarMap);
-router.get("/api/abo", apiController.recibirProspecto);
+router.post("/api/abo", apiController.recibirProspecto);
 
 
 router.get("/acceso", (req, res) => {
