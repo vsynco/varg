@@ -1,0 +1,420 @@
+<%- include('../header.ejs') %>
+
+<style>
+    /* Estilos normales heredados del template */
+    .input-group {
+        margin-bottom: 15px;
+    }
+    .input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #bd93f9;
+    }
+    .input-group input, .input-group select {
+        padding: 0.5rem;
+        margin: 0px;
+        border: 1px solid #6272a4;
+        border-radius: 3px;
+        background-color: #282a36;
+        color: #f8f8f2;
+        width: 200px;
+    }
+    .fixed-values, .percentages, .results {
+        background-color: #44475a;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        border: 1px solid #6272a4;
+    }
+    .button {
+        color: #8be9fd;
+        text-decoration: none;
+        padding: 0.5rem;
+        background-color: transparent;
+        border: 1px solid #8be9fd;
+        cursor: pointer;
+        font-family: 'Fira Code', monospace;
+        margin-top: 1rem;
+    }
+    .button:hover {
+        color: #f1fa8c;
+        border-color: #f1fa8c;
+    }
+    #liquidacionContainer {
+        display: none;
+        margin-top: 30px;
+        padding: 20px;
+        background: #44475a;
+        border-radius: 8px;
+        border: 1px solid #6272a4;
+    }
+
+    /* Estilos de la grilla y formato */
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 5px;
+        margin-bottom: 15px;
+    }
+    .grid-item-label {
+        color: #bd93f9;
+        min-width: 160px;
+        padding: 2px 0;
+    }
+    .grid-container > div {
+        padding: 2px 0;
+    }
+    .two-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin: 15px 0;
+    }
+    .two-columns h3 {
+        margin-bottom: 10px;
+        margin-top: 15px;
+    }
+    .firma {
+        text-align: center;
+        margin-top: 40px;
+    }
+    .firma-linea {
+        border-top: 1px solid #6272a4;
+        width: 200px;
+        margin: 15px auto 10px;
+    }
+    #liquidacionContainer {
+        padding: 15px;
+    }
+    #liquidacionContainer h2 {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    #liquidacionContainer h3 {
+        color: #50fa7b;
+        font-size: 14px;
+    }
+
+    /* Estilos específicos para impresión */
+    @media print {
+        #liquidacionContainer,
+        #liquidacionContainer *,
+        #liquidacionContainer h2,
+        #liquidacionContainer h3,
+        #liquidacionContainer .grid-container,
+        #liquidacionContainer .grid-item-label,
+        #liquidacionContainer .two-columns,
+        #liquidacionContainer .firma,
+        #liquidacionContainer div,
+        #liquidacionContainer span {
+            color: black !important;
+            background-color: white !important;
+            border-color: black !important;
+            font-family: Arial, sans-serif !important;
+            text-shadow: none !important;
+            -webkit-text-fill-color: black !important;
+        }
+        
+        #liquidacionContainer {
+            display: block !important;
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            border: none !important;
+            background: white !important;
+            color: black !important;
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .no-print,
+        .container > *:not(#liquidacionContainer),
+        nav,
+        .button {
+            display: none !important;
+        }
+
+        .firma-linea {
+            border-top: 1px solid black !important;
+        }
+
+        /* Forzar color negro para elementos específicos */
+        #liquidacionContainer .grid-container > div,
+        #liquidacionContainer .two-columns > div,
+        #liquidacionContainer h2,
+        #liquidacionContainer h3,
+        #liquidacionContainer .firma > div {
+            color: black !important;
+            text-shadow: none !important;
+            -webkit-text-fill-color: black !important;
+        }
+    }
+</style>
+
+
+
+<div class="container">
+    <h1>Calculadora de Salario</h1>
+    
+    <div class="fixed-values">
+        <h3>Valores Fijos</h3>
+        <p>Líquido Mensual: $400,000</p>
+        <p>Movilización Diaria: $3,000</p>
+    </div>
+
+    <div class="percentages">
+        <h3>Porcentajes</h3>
+        <p>AFP Modelo: 10.58%</p>
+        <p>Salud: 7.00%</p>
+        <p>Indemnización: 1.11%</p>
+        <p>Cesantía: 3.00%</p>
+        <p>Mutualidad: 0.93%</p>
+        <p>SIS: 1.50%</p>
+        <p>Total Cotizaciones: 24.12%</p>
+    </div>
+
+    <div class="input-group">
+        <label>Mes de Liquidación:</label>
+        <select id="mesLiquidacion">
+            <option value="ENERO">Enero</option>
+            <option value="FEBRERO">Febrero</option>
+            <option value="MARZO">Marzo</option>
+            <option value="ABRIL">Abril</option>
+            <option value="MAYO">Mayo</option>
+            <option value="JUNIO">Junio</option>
+            <option value="JULIO">Julio</option>
+            <option value="AGOSTO">Agosto</option>
+            <option value="SEPTIEMBRE">Septiembre</option>
+            <option value="OCTUBRE" selected>Octubre</option>
+            <option value="NOVIEMBRE">Noviembre</option>
+            <option value="DICIEMBRE">Diciembre</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Días hábiles del mes:</label>
+        <input type="number" id="diasHabilesmes" value="21">
+    </div>
+
+    <div class="input-group">
+        <label>Días ausentes:</label>
+        <input type="number" id="diasAusentes" value="1">
+    </div>
+
+    <div class="input-group">
+        <label>Días hábiles mes siguiente:</label>
+        <input type="number" id="diasHabilesmesSiguiente" value="22">
+    </div>
+
+    <div class="results">
+        <h3>Resultados:</h3>
+        <p>Bruto (Para Previred): <span id="resultadoBruto">$0</span></p>
+        <p>Movilización: <span id="resultadoMovilizacion">$0</span></p>
+        <p>Transferencia: <span id="resultadoTransferencia">$0</span></p>
+    </div>
+
+    <button class="button" onclick="generarLiquidacion()">Generar Liquidación</button>
+    <button class="button" onclick="window.print()" style="margin-left: 10px;">Imprimir</button>
+</div>
+
+
+<div id="liquidacionContainer">
+    <h2 style="text-align: center;">LIQUIDACIÓN DE SUELDOS</h2>
+    
+    <div class="grid-container">
+        <div class="grid-item-label">EMPLEADOR:</div>
+        <div>GABRIELA CONSTANZA LEAÑO GONZÁLEZ</div>
+        
+        <div class="grid-item-label">C.N.I.:</div>
+        <div>17.092.184-4</div>
+        
+        <div class="grid-item-label">DIRECCIÓN:</div>
+        <div>PARQUE NACIONAL LAUCA 3173, PUERTO VARAS</div>
+        
+        <div class="grid-item-label">FONO:</div>
+        <div>937539918</div>
+        
+        <div class="grid-item-label">TRABAJADOR:</div>
+        <div>MARÍA JOSÉ SOTO MARTÍNEZ</div>
+        
+        <div class="grid-item-label">RUT:</div>
+        <div>17.638.912-5</div>
+        
+        <div class="grid-item-label">MES:</div>
+        <div><span id="mesActual"></span> DE 2024</div>
+    </div>
+
+    <div class="two-columns">
+        <div>
+            <h3>HABERES IMPONIBLES</h3>
+            <div class="grid-container">
+                <div>SUELDO BASE</div>
+                <div id="sueldoBase">$0</div>
+                
+                <div>DÍAS AUSENTES</div>
+                <div id="montoAusentes">$0</div>
+                
+                <div>SUELDO BASE ACT:</div>
+                <div id="sueldoBaseAct">$0</div>
+            </div>
+
+            <h3>HABERES NO IMPONIBLES:</h3>
+            <div class="grid-container">
+                <div>LOCOMOCIÓN:</div>
+                <div id="locomocion">$0</div>
+            </div>
+        </div>
+
+        <div>
+            <h3>DESCUENTOS</h3>
+            <div class="grid-container">
+                <div>AFP:</div>
+                <div>10,58% <span id="montoAfp">$0</span></div>
+                
+                <div>SEG. CESANTÍA:</div>
+                <div>3% <span id="montoCesantia">$0</span></div>
+                
+                <div>FONASA:</div>
+                <div>7% <span id="montoFonasa">$0</span></div>
+                
+                <div>INDEMN:</div>
+                <div>1,1% <span id="montoIndemn">$0</span></div>
+                
+                <div>MUTUALIDAD:</div>
+                <div>0,93% <span id="montoMutualidad">$0</span></div>
+                
+                <div>SIS:</div>
+                <div>1,47% <span id="montoSis">$0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="grid-item-label">RENTA IMPONIBLE:</div>
+        <div id="rentaImponible">$0</div>
+        
+        <div class="grid-item-label">DESCUENTO PREVISIONAL:</div>
+        <div id="descuentoPrevisional">$0</div>
+        
+        <div class="grid-item-label">HABERES NO IMPONIBLES:</div>
+        <div id="haberesNoImponibles">$0</div>
+        
+        <div class="grid-item-label">SUELDO LÍQUIDO:</div>
+        <div id="sueldoLiquido">$0</div>
+        
+        <div class="grid-item-label">ANTICIPOS:</div>
+        <div>$0</div>
+        
+        <div class="grid-item-label">LIQUIDO A PAGAR:</div>
+        <div id="liquidoAPagar">$0</div>
+    </div>
+
+    <div class="firma">
+        <div class="firma-linea"></div>
+        <div>RECIBO Y FIRMO CONFORME</div>
+    </div>
+
+    <div class="no-print" style="text-align: right; margin-top: 20px;">
+        <button class="button" onclick="window.print()">Imprimir</button>
+    </div>
+</div>
+
+    <script>
+       // Constantes
+const LIQUIDO_MENSUAL = 400000;
+const MOVILIZACION_DIARIA = 3000;
+const PORCENTAJE_COTIZACIONES = 24.12;
+
+// Función para formatear números como moneda
+function formatMoney(amount) {
+    return '$' + amount.toLocaleString('es-CL');
+}
+
+// Función principal de cálculo
+function calcular() {
+    const diasHabilesmes = parseFloat(document.getElementById('diasHabilesmes').value) || 0;
+    const diasAusentes = parseFloat(document.getElementById('diasAusentes').value) || 0;
+    const diasHabilesmesSiguiente = parseFloat(document.getElementById('diasHabilesmesSiguiente').value) || 0;
+
+    // Cálculo del bruto y descuentos
+    const bruto = LIQUIDO_MENSUAL / (1 - (PORCENTAJE_COTIZACIONES / 100));
+    const brutoAjustado = bruto * ((diasHabilesmes - diasAusentes) / diasHabilesmes);
+    
+    // Descuentos usando el bruto ajustado como base
+    const afp = brutoAjustado * 0.1058;
+    const cesantia = brutoAjustado * 0.03;
+    const fonasa = brutoAjustado * 0.07;
+    const indemn = brutoAjustado * 0.0111;
+    const mutualidad = brutoAjustado * 0.0093;
+    const sis = brutoAjustado * 0.0150;
+    
+    // Cálculo de totales
+    const descuentoPrevisional = afp + cesantia + fonasa + indemn + mutualidad + sis;
+    const sueldoLiquido = brutoAjustado - descuentoPrevisional;
+    const movilizacion = MOVILIZACION_DIARIA * (diasHabilesmesSiguiente - diasAusentes);
+    const liquidoAPagar = sueldoLiquido + movilizacion;
+
+    // Actualizar resultados en la vista previa
+    document.getElementById('resultadoBruto').textContent = formatMoney(Math.round(brutoAjustado));
+    document.getElementById('resultadoMovilizacion').textContent = formatMoney(Math.round(movilizacion));
+    document.getElementById('resultadoTransferencia').textContent = formatMoney(Math.round(liquidoAPagar));
+}
+
+function generarLiquidacion() {
+    const diasHabilesmes = parseFloat(document.getElementById('diasHabilesmes').value) || 0;
+    const diasAusentes = parseFloat(document.getElementById('diasAusentes').value) || 0;
+    const diasHabilesmesSiguiente = parseFloat(document.getElementById('diasHabilesmesSiguiente').value) || 0;
+    const mes = document.getElementById('mesLiquidacion').value;
+    
+    // Cálculo del bruto y descuentos
+    const bruto = LIQUIDO_MENSUAL / (1 - (PORCENTAJE_COTIZACIONES / 100));
+    const brutoAjustado = bruto * ((diasHabilesmes - diasAusentes) / diasHabilesmes);
+    
+    // Descuentos usando el bruto ajustado como base
+    const afp = brutoAjustado * 0.1058;
+    const cesantia = brutoAjustado * 0.03;
+    const fonasa = brutoAjustado * 0.07;
+    const indemn = brutoAjustado * 0.0111;
+    const mutualidad = brutoAjustado * 0.0093;
+    const sis = brutoAjustado * 0.0150;
+    
+    // Cálculo de totales
+    const descuentoPrevisional = afp + cesantia + fonasa + indemn + mutualidad + sis;
+    const sueldoLiquido = brutoAjustado - descuentoPrevisional;
+    const movilizacion = MOVILIZACION_DIARIA * (diasHabilesmesSiguiente - diasAusentes);
+    const liquidoAPagar = sueldoLiquido + movilizacion;
+
+    // Actualizar valores en la liquidación
+    document.getElementById('mesActual').textContent = mes;
+    document.getElementById('sueldoBase').textContent = formatMoney(Math.round(bruto));
+    document.getElementById('montoAusentes').textContent = formatMoney(-Math.round(bruto * diasAusentes / diasHabilesmes));
+    document.getElementById('sueldoBaseAct').textContent = formatMoney(Math.round(brutoAjustado));
+    document.getElementById('locomocion').textContent = formatMoney(Math.round(movilizacion));
+    document.getElementById('montoAfp').textContent = formatMoney(Math.round(afp));
+    document.getElementById('montoCesantia').textContent = formatMoney(Math.round(cesantia));
+    document.getElementById('montoFonasa').textContent = formatMoney(Math.round(fonasa));
+    document.getElementById('montoIndemn').textContent = formatMoney(Math.round(indemn));
+    document.getElementById('montoMutualidad').textContent = formatMoney(Math.round(mutualidad));
+    document.getElementById('montoSis').textContent = formatMoney(Math.round(sis));
+    document.getElementById('rentaImponible').textContent = formatMoney(Math.round(brutoAjustado));
+    document.getElementById('descuentoPrevisional').textContent = formatMoney(Math.round(descuentoPrevisional));
+    document.getElementById('haberesNoImponibles').textContent = formatMoney(Math.round(movilizacion));
+    document.getElementById('sueldoLiquido').textContent = formatMoney(Math.round(sueldoLiquido));
+    document.getElementById('liquidoAPagar').textContent = formatMoney(Math.round(liquidoAPagar));
+
+    // Mostrar la liquidación
+    document.getElementById('liquidacionContainer').style.display = 'block';
+}
+
+// Agregar event listeners a los inputs
+document.getElementById('diasHabilesmes').addEventListener('input', calcular);
+document.getElementById('diasAusentes').addEventListener('input', calcular);
+document.getElementById('diasHabilesmesSiguiente').addEventListener('input', calcular);
+
+// Calcular inicialmente
+calcular();
+    </script>
+<%- include('../footer.ejs') %>

@@ -20,6 +20,7 @@ const apiController = require("./controllers/apiController");
 // ACCESO
 router.get("/", seccionesController.mostrarPortada);
 router.get("/contacto", seccionesController.mostrarContacto);
+router.get("/worker", seccionesController.mostrarWorker);
 router.get("/blog", seccionesController.mostrarBlog);
 router.get("/map", seccionesController.mostrarMap);
 router.post("/api/abo", apiController.recibirProspecto);
