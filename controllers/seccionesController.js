@@ -37,6 +37,17 @@ async function mostrarWorker(req, res, pageTitle) {
 }
 
 
+async function mostrarAguas(req, res, pageTitle) {
+  try {
+    res.render("secciones/aguas", {
+      title: pageTitle,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Hubo un error al cargar sección");
+  }
+}
+
 async function mostrarBlog(req, res, pageTitle) {
   try {
     res.render("secciones/blog", {
@@ -80,4 +91,5 @@ module.exports = {
   mostrarBlog,
   mostrarMap,
   mostrarWorker,
+  mostrarAguas,
 };
