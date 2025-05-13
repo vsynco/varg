@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="/api/placeholder/32/32" type="image/x-icon">
+  <title>Grupo Legal Puig | Derecho Laboral y Penal Económico</title>
+  <style>
+    :root {
+      --primary: #2B4B6F; /* Azul oscuro profesional */
+      --secondary: #E0E0DB; /* Beige claro */
+      --dark: #1D2731; /* Gris muy oscuro */
+      --light: #ffffff;
+      --gray: #f8f9fa;
+      --gray-dark: #e2e5e9;
+      --text: #333333;
+      --text-secondary: #666666;
+      --shadow: 0 8px 20px rgba(0,0,0,0.06);
+      --shadow-large: 0 15px 30px rgba(0,0,0,0.1);
+      --accent: #A52A2A; /* Tono burdeos para acentos */
+      --whatsapp: #25D366;
+      --whatsapp-hover: #1ea952;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Playfair Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, serif;
+    }
+
+    body {
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    @media (max-width: 992px) {
+      .container {
+        padding: 0 16px;
+        max-width: 100%;
+      }
+    }
+
+    /* PROMO / INICIO */
+    .promo-bar {
+      background-color: var(--accent);
+      color: var(--light);
+      padding: 10px 0;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      top: 0;
+      width: 100%;
+      z-index: 110;
+    }
+
+    /* WHATSAPP / INICIO */
+    .float-whatsapp {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      bottom: 25px;
+      right: 25px;
+      background-color: var(--primary);
+      color: #FFF;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 24px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      z-index: 1002;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .float-whatsapp:hover {
+      background-color: #20395A;
+      transform: scale(1.05);
+    }
+
+    .float-whatsapp:before {
+      content: "";
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2,64 0 5,122 1,03 6,988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>') no-repeat center center;
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    /* HERO INICIO */
+    .hero-split {
+      padding: 70px 0 80px;
+      background: linear-gradient(rgba(40, 56, 69, 0.92), rgba(40, 56, 69, 0.92)), url('/static/puig/15.jpg') center/cover;
+      color: #ffffff;
+    }
+
+    .hero-split-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .hero-split-content {
+      flex: 1;
+      text-align: left;
+      padding-right: 30px;
+      max-width: 650px;
+    }
+
+    .hero-split-logo {
+      margin-bottom: 25px;
+    }
+
+    .hero-split-logo img {
+      height: 60px;
+      width: auto;
+      display: block;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .hero-split-badge {
+      display: inline-block;
+      background-color: rgba(43, 75, 111, 0.2);
+      color: var(--secondary);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero-split-heading {
+      font-size: 38px;
+      line-height: 1.3;
+      margin-bottom: 22px;
+      font-weight: 700;
+    }
+
+    .hero-split-heading span {
+      color: var(--accent);
+    }
+
+    .hero-split-description {
+      font-size: 17px;
+      margin-bottom: 30px;
+      opacity: 0.9;
+      line-height: 1.7;
+    }
+
+    .hero-split-button {
+      background-color: var(--primary);
+      color: var(--light);
+      padding: 14px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      display: inline-block;
+      transition: all 0.3s;
+      border: 2px solid var(--primary);
+      cursor: pointer;
+    }
+
+    .hero-split-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      background-color: #20395A;
+      border-color: #20395A;
+    }
+
+    .hero-split-form-container {
+      width: 320px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      color: #333333;
+    }
+
+    .hero-split-form-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--dark);
+      text-align: center;
+    }
+
+    .hero-split-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .hero-split-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(43, 75, 111, 0.2);
+    }
+
+    .hero-split-submit {
+      width: 100%;
+      background-color: var(--primary);
+      color: var(--light);
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .hero-split-submit:hover {
+      background-color: #20395A;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .hero-split-note {
+      font-size: 12px;
+      color: #666666;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .hero-split-whatsapp {
+      margin-top: 15px;
+      display: none;
+    }
+
+    @media (max-width: 992px) {
+      .hero-split-container {
+        flex-direction: column;
+      }
+
+      .hero-split-content {
+        text-align: center;
+        padding-right: 0;
+        margin-bottom: 30px;
+      }
+
+      .hero-split-logo {
+        display: flex;
+        justify-content: center;
+      }
+
+      .hero-split-logo img {
+        margin: 0 auto;
+      }
+
+      .hero-split-heading {
+        font-size: 32px;
+      }
+
+      .hero-split-form-container {
+        width: 100%;
+        max-width: 380px;
+        margin: 0 auto;
+      }
+    }
+
+    /* SERVICIOS INICIO */
+    .services-section {
+      padding: 80px 0;
+      background-color: var(--gray);
+    }
+
+    .services-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .services-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 18px;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .services-subtitle {
+      text-align: center;
+      margin-bottom: 50px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .service-card {
+      background-color: var(--light);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-large);
+    }
+
+    .service-card-image {
+      height: 200px;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 3rem;
+      overflow: hidden;
+    }
+
+    .service-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .service-card-content {
+      padding: 25px;
+    }
+
+    .service-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+
+    .service-card-text {
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .service-card-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .service-card-link:hover {
+      color: #20395A;
+    }
+
+    .service-card-link::after {
+      content: "→";
+      margin-left: 5px;
+      transition: all 0.3s;
+    }
+
+    .service-card-link:hover::after {
+      margin-left: 10px;
+    }
+
+    @media (max-width: 992px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .services-title {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ENFOQUE INICIO */
+    .approach-section {
+      padding: 80px 0;
+      background-color: var(--light);
+    }
+
+    .approach-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .approach-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 18px;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .approach-subtitle {
+      text-align: center;
+      margin-bottom: 50px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    .approach-card {
+      background-color: var(--gray);
+      border-radius: 8px;
+      padding: 30px;
+      transition: all 0.3s;
+    }
+
+    .approach-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .approach-card-icon {
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary);
+      color: var(--light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .approach-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+
+    .approach-card-text {
+      color: var(--text);
+    }
+
+    @media (max-width: 992px) {
+      .approach-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+
+      .approach-title {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .approach-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* TESTIMONIOS INICIO */
+    .testimonials-section {
+      padding: 80px 0;
+      background-color: var(--gray);
+    }
+
+    .testimonials-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .testimonials-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 18px;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .testimonials-subtitle {
+      text-align: center;
+      margin-bottom: 50px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    .testimonial-card {
+      background-color: var(--light);
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .testimonial-card::before {
+      content: """;
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 60px;
+      color: rgba(43, 75, 111, 0.2);
+      font-family: serif;
+      line-height: 1;
+    }
+
+    .testimonial-content {
+      margin-bottom: 20px;
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+    }
+
+    .testimonial-author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
+      background-color: var(--gray-dark);
+      overflow: hidden;
+    }
+
+    .testimonial-author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .testimonial-author-name {
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .testimonial-author-title {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 992px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonials-title {
+        font-size: 28px;
+      }
+    }
+
+    /* EQUIPO INICIO *//* EQUIPO INICIO - MODIFICADO */
+.team-section {
+  padding: 60px 0;
+  background-color: var(--light);
+}
+
+.team-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.team-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 18px;
+  color: var(--dark);
+  font-weight: 700;
+}
+
+.team-subtitle {
+  text-align: center;
+  margin-bottom: 50px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.team-card {
+  background-color: var(--gray);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-large);
+}
+
+.team-card-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  border: 1px solid var(--primary);
+}
+
+.team-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-card-content {
+  text-align: left;
+}
+
+.team-card-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: var(--dark);
+}
+
+.team-card-title {
+  color: var(--primary);
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.team-social-link {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--dark);
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.team-social-link:hover {
+  background-color: var(--accent);
+}
+
+@media (max-width: 992px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+    /* CTA / INICIO */
+    .cta-section {
+      padding: 80px 0;
+      background: linear-gradient(rgba(40, 56, 69, 0.95), rgba(40, 56, 69, 0.95)), url('/static/puig/16.jpg') center/cover;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .cta-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .cta-logo {
+      margin-bottom: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cta-logo img {
+      height: 45px;
+      width: auto;
+      display: block;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .cta-heading {
+      font-size: 36px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .cta-description {
+      margin-bottom: 40px;
+      font-size: 18px;
+      opacity: 0.9;
+      line-height: 1.7;
+    }
+
+    .cta-button {
+      background-color: var(--accent);
+      color: var(--light);
+      padding: 15px 30px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      display: inline-block;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      background-color: #8B2222;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    @media (max-width: 992px) {
+      .cta-heading {
+        font-size: 30px;
+      }
+
+      .cta-description {
+        font-size: 16px;
+      }
+    }
+
+    /* FOOTER INICIO */
+    .footer {
+      background-color: var(--dark);
+      color: var(--light);
+      padding: 60px 0 30px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .footer-logo {
+      margin-bottom: 20px;
+    }
+
+    .footer-logo img {
+      height: 40px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .footer-description {
+      margin-bottom: 25px;
+      opacity: 0.8;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 15px;
+    }
+
+    .footer-social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .footer-social-link:hover {
+      background-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .footer-heading {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--light);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-contact-item {
+      display: flex;
+      margin-bottom: 15px;
+    }
+
+    .footer-contact-icon {
+      margin-right: 10px;
+      color: var(--accent);
+    }
+
+    .footer-contact-text {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-bottom {
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copyright {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-bottom-links a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 992px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+    }
+
+    /* MODAL / INICIO */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 25px;
+      z-index: 1001;
+      max-width: 380px;
+      width: 100%;
+      animation: slideIn 0.3s ease forwards;
+    }
+
+    .modal {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      position: relative;
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+      color: #999;
+      background: none;
+      border: none;
+      transition: color 0.3s;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      display: block;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(43, 75, 111, 0.2);
+    }
+
+    #contactForm {
+      width: 100%;
+    }
+
+    #contactForm p {
+      margin-bottom: 15px;
+    }
+
+    .modal-submit {
+      width: 100%;
+      margin-top: 5px;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 6px;
+      background-color: var(--primary);
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .modal-submit:hover {
+      background-color: #20395A;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .whatsapp-btn {
+      margin-top: 10px;
+    }
+
+    .whatsapp-btn p {
+      margin-bottom: 15px;
+    }
+
+    .cta-whatsapp {
+      background-color: var(--accent);
+      color: var(--light);
+      padding: 10px 18px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-block;
+      position: relative;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .cta-whatsapp:hover {
+      background-color: #8B2222;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    @media (max-width: 992px) {
+      .modal-overlay {
+        bottom: auto;
+        right: 0;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0 auto;
+        max-width: 90%;
+        padding: 0 15px;
+        animation: fadeIn 0.3s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .modal {
+        padding: 25px 20px;
+        border-radius: 12px;
+        font-size: 15px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modal-overlay {
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PROMO / INICIO -->
+  <div class="promo-bar">
+    <div class="container">
+      <span>Excelencia y rigurosidad en materia laboral y penal económica.</span>
+    </div>
+  </div>
+  <!-- PROMO / FIN -->
+
+  <!-- WHATSAPP / INICIO -->
+  <a href="#" class="float-whatsapp open-modal-btn"></a>
+  <!-- WHATSAPP / FIN -->
+
+  <!-- HERO INICIO -->
+  <section class="hero-split">
+    <div class="hero-split-container">
+      <div class="hero-split-content">
+        <div class="hero-split-logo">
+          <img src="/static/puig/logo_white.png" alt="Puig Legal Group" width="auto">
+        </div>
+        <h1 class="hero-split-heading">Defensa Laboral y Penal Económica</h1>
+        <p class="hero-split-description">Puig Legal Group es un estudio jurídico especializado en representación de empresas mediante acciones penales en casos de delitos económicos y defensa integral en materia laboral, aplicando tecnología avanzada para garantizar transparencia y eficacia en la gestión de sus procesos legales.</p>
+
+      </div>
+      <div class="hero-split-form-container">
+        <h3 class="hero-split-form-title">Solicite asesoramiento legal</h3>
+        <form id="heroSplitForm">
+          <input type="text" id="hero-split-name" class="hero-split-input" required placeholder="Nombre">
+          <input type="email" id="hero-split-email" class="hero-split-input" required placeholder="Correo electrónico">
+          <input type="tel" id="hero-split-phone" class="hero-split-input" required placeholder="Teléfono">
+          <button type="submit" class="hero-split-submit">Solicitar información</button>
+        </form>
+        <div id="heroSplitWhatsapp" class="hero-split-whatsapp">
+          <p class="hero-split-note">Un abogado especialista se pondrá en contacto con usted en breve</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- HERO FIN -->
+
+  <!-- SERVICIOS INICIO -->
+  <section class="services-section">
+    <div class="services-container">
+      <h2 class="services-title">Servicios Legales Especializados</h2>
+      <p class="services-subtitle">Ofrecemos asesoría legal integral para empresas, con especialización en áreas críticas del derecho laboral y penal económico</p>
+      <div class="services-grid">
+        <!-- Servicios de Derecho Laboral y Penal -->
+        <div class="service-card">
+          <div class="service-card-image">
+            <img src="/static/puig/18.jpg" alt="Defensa de Demandas Laborales">
+          </div>
+          <div class="service-card-content">
+            <h3 class="service-card-title">Defensa de Demandas Laborales</h3>
+            <p class="service-card-text">Representación legal especializada ante demandas laborales de todo tipo, incluyendo despidos injustificados, tutela de derechos fundamentales, y otros, con enfoque en minimizar impactos para su empresa.</p>
+            <a href="#" class="service-card-link open-modal-btn">Más información</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-image">
+            <img src="/static/puig/9.jpg" alt="Acciones Penales Económicas">
+          </div>
+          <div class="service-card-content">
+            <h3 class="service-card-title">Acciones Penales Económicas</h3>
+            <p class="service-card-text">Asistencia legal especializada en la interposición y seguimiento de acciones penales por administración desleal, apropiación indebida, estafa y otros delitos económicos. Desarrollamos estrategias personalizadas para proteger los intereses de su empresa mediante una representación jurídica rigurosa y efectiva.</p>
+            <a href="#" class="service-card-link open-modal-btn">Más información</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-image">
+            <img src="/static/puig/16.jpg" alt="Asesoría Laboral Continua">
+          </div>
+          <div class="service-card-content">
+            <h3 class="service-card-title">Asesoría Laboral Continua</h3>
+            <p class="service-card-text">Servicio permanente de soporte legal que incluye revisión de contratos, políticas internas, asesoramiento en despidos, negociaciones colectivas y gestión diaria de conflictos laborales con un enfoque preventivo y tecnológico.</p>
+            <a href="#" class="service-card-link open-modal-btn">Más información</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- SERVICIOS FIN -->
+
+  <!-- ENFOQUE INICIO -->
+  <section class="approach-section">
+    <div class="approach-container">
+      <h2 class="approach-title">Nuestro Enfoque</h2>
+      <p class="approach-subtitle">¿Por qué las empresas confían en Puig Legal Group para su defensa laboral y penal económica?</p>
+      <div class="approach-grid">
+        <div class="approach-card">
+          <div class="approach-card-icon">1</div>
+          <h3 class="approach-card-title">Especialización Jurídica</h3>
+          <p class="approach-card-text">Nuestros abogados son especialistas en sus áreas respectivas, cuentan con amplia experiencia en litigación laboral y penal económica, permitiéndonos ofrecer soluciones precisas y eficaces para cada caso.</p>
+        </div>
+
+        <div class="approach-card">
+          <div class="approach-card-icon">2</div>
+          <h3 class="approach-card-title">Innovación Tecnológica</h3>
+          <p class="approach-card-text">Integramos herramientas tecnológicas avanzadas en nuestra práctica legal para agilizar procesos, mejorar la comunicación con nuestros clientes y maximizar la eficiencia en la gestión de casos complejos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ENFOQUE FIN -->
+
+  <!-- TESTIMONIOS INICIO -->
+  <section class="testimonials-section">
+    <div class="testimonials-container">
+      <h2 class="testimonials-title">Lo que dicen nuestros clientes</h2>
+      <p class="testimonials-subtitle">Testimonios de empresas que han confiado en nuestros servicios legales</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-content">Cuando nuestra empresa se enfrentó a una acusación por administración desleal, Puig Legal Group desarrolló una estrategia de defensa impecable que no solo resolvió el caso favorablemente, sino que también protegió nuestra reputación en el mercado.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-author-avatar">
+              <img src="/static/puig/8.jpg" alt="Cliente">
+            </div>
+            <div>
+              <div class="testimonial-author-name">L.V.</div>
+              <div class="testimonial-author-title">AGACECH, Asociación Gremial</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <p class="testimonial-content">Su asesoramiento preventivo en materia laboral nos ha permitido reducir en un 70% los litigios durante el último año. Su enfoque proactivo y conocimiento profundo de nuestra industria marcan la diferencia respecto a otros despachos.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-author-avatar">
+              <img src="/static/puig/9.jpg" alt="Cliente">
+            </div>
+            <div>
+              <div class="testimonial-author-name">S.L.</div>
+              <div class="testimonial-author-title">Director de RRHH, Multinacional Tecnológica</div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </section>
+  <!-- TESTIMONIOS FIN -->
+
+  <!-- EQUIPO INICIO -->
+  <section class="team-section">
+    <div class="team-container">
+      <h2 class="team-title">Nuestro Equipo</h2>
+      <p class="team-subtitle">Abogados especialistas en derecho laboral y penal económico con amplia experiencia en defensa empresarial</p>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-card-image">
+            <img src="/static/puig/cam.png" alt="Camila Puig">
+          </div>
+          <div class="team-card-content">
+            <h3 class="team-card-name">Camila Puig Albornoz</h3>
+            <div class="team-card-title">Co-Fundadora, Abogada y CEO</div>
+          <!-- <div class="team-social">
+              <a href="#" class="team-social-link">L</a>
+              <a href="#" class="team-social-link">E</a>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-card-image">
+            <img src="/static/puig/jp.png" alt="Juan Pablo Vargas">
+          </div>
+          <div class="team-card-content">
+            <h3 class="team-card-name">Juan Pablo Vargas</h3>
+            <div class="team-card-title">Co-Fundador, Abogado y CTO</div>
+            <!-- <div class="team-social">
+              <a href="#" class="team-social-link">L</a>
+              <a href="#" class="team-social-link">E</a>
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- EQUIPO FIN -->
+
+
+  <!-- CTA / INICIO -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <div class="cta-logo">
+        <img src="/static/puig/logo_white.png" alt="Puig Legal Group" width="auto">
+      </div>
+      <h2 class="cta-heading">Proteja su empresa con la mejor defensa legal especializada</h2>
+      <p class="cta-description">Consulte con nuestros especialistas y descubra cómo podemos ayudarle a prevenir y resolver conflictos laborales y penales económicos con estrategias adaptadas a su negocio.</p>
+      <a href="#" class="cta-button open-modal-btn">Agenda Consulta</a>
+    </div>
+  </section>
+  <!-- CTA / FIN -->
+
+  <!-- FOOTER INICIO -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-info">
+          <div class="footer-logo">
+            <img src="/static/puig/logo_white.png" alt="Puig Legal Group" width="auto">
+          </div>
+          <p class="footer-description">Puig Legal Group es un estudio jurídico especializado en representación de empresas mediante acciones penales en casos de delitos económicos y defensa integral en materia laboral, aplicando tecnología avanzada para garantizar transparencia y eficacia en la gestión de sus procesos legales.</p>
+          <div class="footer-social">
+            <a href="#" class="footer-social-link">F</a>
+            <a href="#" class="footer-social-link">L</a>
+            <a href="#" class="footer-social-link">T</a>
+          </div>
+        </div>
+
+        <div class="footer-links-column">
+          <h3 class="footer-heading">Servicios</h3>
+          <ul class="footer-links">
+            <li><a href="#">Asesoría Laboral</a></li>
+            <li><a href="#">Litigios Laborales</a></li>
+            <li><a href="#">Delitos Económicos</a></li>
+            <li><a href="#">Compliance Penal</a></li>
+            <li><a href="#">Investigaciones Internas</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-column">
+          <h3 class="footer-heading">Enlaces</h3>
+          <ul class="footer-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Equipo</a></li>
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#">Testimonios</a></li>
+            <li><a href="#">Preguntas Frecuentes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h3 class="footer-heading">Contacto</h3>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">L</div>
+            <div class="footer-contact-text">Av. Presidente Kennedy 5600, Vitacura</div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">P</div>
+            <div class="footer-contact-text">+56 9 9827 9867</div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">

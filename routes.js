@@ -8,9 +8,24 @@ const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
+const accesosController = require("./controllers/accesosController");
+
 router.use((req, res, next) => { 
   req.userSession = req.session.user; 
   next(); 
+});
+
+router.use((req, res, next) => {
+  const host = req.headers.host;
+
+  if (host === 'puigabogados.cl' || host === 'www.puigabogados.cl') {
+    if (req.path === '/' || req.path === '') {
+      // Reescribe la ruta para servir el contenido de /puig
+      req.url = '/puig';
+    }
+  }
+
+  next();
 });
 
 // Autenticación
@@ -55,6 +70,7 @@ router.get("/perfil", is.Authenticated, (req, res) => {
 // Cerrar Sesión
 
 router.get("/salir", personasController.cerrarSesion);
+
 
 
 module.exports = router;
