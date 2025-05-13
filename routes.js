@@ -71,6 +71,10 @@ router.get("/perfil", is.Authenticated, (req, res) => {
 
 router.get("/salir", personasController.cerrarSesion);
 
+router.get("/puig", async (req, res, next) => {
+  const pageTitle = "Puig Legal Group";
+  accesosController.mostrarPuig(req, res, pageTitle);
+});
 
 
 module.exports = router;
