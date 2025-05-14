@@ -112,21 +112,39 @@
     }
 
     .hero-split-form-container {
-      width: 340px;
-      background-color: #ffffff;
-      border-radius: 8px;
-      padding: 30px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-      color: #333333;
-    }
+  width: 340px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  color: #333333;
+}
 
-    .hero-split-form-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: var(--dark);
-      text-align: center;
-    }
+.hero-split-form-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--dark);
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .hero-split-form-container {
+    width: 95%; /* Casi todo el ancho en pantallas muy pequeñas */
+    padding: 20px 15px;
+    margin: 0 auto; /* Centrar el formulario */
+  }
+  
+  .hero-split-form-title {
+    font-size: 18px; /* Ligera reducción de tamaño para mejor ajuste */
+  }
+  
+  .hero-split-input {
+    padding: 12px 14px; /* Campos de formulario ligeramente más compactos */
+  }
+}
+
 
     .hero-split-input {
       width: 100%;
