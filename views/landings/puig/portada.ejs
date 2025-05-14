@@ -1057,28 +1057,50 @@
   </footer>
 
   <script>
-    // Script para funcionalidad de contacto
-    document.getElementById('contactButton').addEventListener('click', function() {
+// Script para funcionalidad de contacto
+document.addEventListener('DOMContentLoaded', function() {
+  // Verificar si el botón existe antes de asignar el evento
+  var contactButton = document.getElementById('contactButton');
+  if (contactButton) {
+    contactButton.addEventListener('click', function() {
       document.getElementById('name').focus();
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
     });
-    
-    document.getElementById('agendaButton').addEventListener('click', function() {
-      document.getElementById('name').focus();
+  }
+  
+  // Asegurarnos de que el botón de agenda funcione correctamente
+  var agendaButton = document.getElementById('agendaButton');
+  if (agendaButton) {
+    agendaButton.addEventListener('click', function() {
+      // Desplazar a la parte superior de la página
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
+      
+      // Opcional: enfocar el campo de nombre después de un breve retraso
+      setTimeout(function() {
+        var nameField = document.getElementById('name');
+        if (nameField) {
+          nameField.focus();
+        }
+      }, 800); // Esperar 800ms para asegurar que el desplazamiento haya terminado
     });
-    
-    document.getElementById('heroSplitForm').addEventListener('submit', function(e) {
+  }
+  
+  // Manejar el envío del formulario
+  var heroForm = document.getElementById('heroSplitForm');
+  if (heroForm) {
+    heroForm.addEventListener('submit', function(e) {
       e.preventDefault();
       alert('Gracias por su mensaje. Un abogado especialista se pondrá en contacto con usted a la brevedad.');
       this.reset();
     });
+  }
+});
   </script>
 </body>
 </html>
