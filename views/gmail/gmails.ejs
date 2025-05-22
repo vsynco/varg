@@ -1,0 +1,35 @@
+<%- include('../header.ejs') %>
+
+<section class="section">
+  <div class="section-header">
+    <div>
+        <h2 class="section-title">Contactos Registrados con Gmail</h2>
+        <div class="breadcrumb"><a href="/">Inicio</a> > Contactos</div>
+    </div>
+  </div>
+
+  <div class="grid">
+     
+      <div class="card">
+          <% personas_naturales.forEach(function(pn) { %>
+            <a href="/gmail/<%= pn.id %>"><div class="list-item">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <strong><%= pn.nombre %><% if (pn.registrado) { %>🟢<% } %></strong>
+                      <span>ID: <%= pn.id %> / RUT: <%= pn.rut %></span>
+                  </div>
+                  <div class="subtitle">Correo: <%= pn.email %> / Teléfono: <%= pn.telefono %></div>
+                  <% if (pn.domicilio || pn.comuna || pn.region) { %>
+                      <div class="ultra-subtitle">
+                          <%= pn.domicilio ? pn.domicilio + ', ' : '' %>
+                          <%= pn.comuna ? pn.comuna + ', ' : '' %>
+                          <%= pn.region ? pn.region : '' %>
+                      </div>
+                  <% } %>
+              </div></a>
+          <% }) %>
+      </div>
+  </div>
+</section>
+
+
+<%- include('../footer.ejs') %>

@@ -8,12 +8,12 @@ const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
-const accesosController = require("./controllers/accesosController");
-
 router.use((req, res, next) => { 
   req.userSession = req.session.user; 
   next(); 
 });
+
+const accesosController = require("./controllers/accesosController");
 
 router.use((req, res, next) => {
   const host = req.headers.host;
@@ -31,16 +31,10 @@ router.use((req, res, next) => {
 // Autenticación
 const personasController  = require("./controllers/personasController");
 const seccionesController = require("./controllers/seccionesController");
-const apiController = require("./controllers/apiController");
+
 // ACCESO
 router.get("/", seccionesController.mostrarPortada);
-router.get("/contacto", seccionesController.mostrarContacto);
 router.get("/worker", seccionesController.mostrarWorker);
-router.get("/aguas", seccionesController.mostrarAguas);
-router.get("/blog", seccionesController.mostrarBlog);
-router.get("/map", seccionesController.mostrarMap);
-router.post("/api/abo", apiController.recibirProspecto);
-
 
 router.get("/acceso", (req, res) => {
   if (req.userSession) {
@@ -53,15 +47,29 @@ router.get("/acceso", (req, res) => {
 });
 
 
+
+router.get("/gmail/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarContactoNaturalConToken(req, res);});
+router.get("/gmail/videos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarVideos(req, res);});
+router.get("/gmail/drive/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarArchivosDrive(req, res);});
+router.get("/gmail/drive_fotos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarFotosDrive(req, res);});
+router.get("/gmail/drive_videos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarVideosDrive(req, res);});
+router.get("/gmail/drive_fotos/:id/photos", is.Authenticated, is.Admin, (req, res) => { accesosController.mostrarFotosDrive(req, res); });
+router.get("/gmail/", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarContactosGmail(req, res);});
+router.get("/google", accesosController.iniciarAutenticacionGoogle);
+router.get("/log", accesosController.iniciarAutenticacionGooglePhotos);
+router.get("/google_callback", accesosController.manejarCallbackGoogle);
+router.get("/google_callbacks", accesosController.manejarCallbacksGoogle);
+
+
+
+
+
 // ACCESO
 router.post("/acceso", (req, res, next) => {
   personasController.iniciarSesion(req, res, next);
 });
 
-router.post("/registro", personasController.registrarPersona);
-
 // Perfil
-
 router.get("/perfil", is.Authenticated, (req, res) => {
   const pageTitle = "Perfil";
   personasController.mostrarPerfil(req, res, pageTitle);
@@ -75,6 +83,5 @@ router.get("/puig", async (req, res, next) => {
   const pageTitle = "Puig Legal Group";
   accesosController.mostrarPuig(req, res, pageTitle);
 });
-
 
 module.exports = router;

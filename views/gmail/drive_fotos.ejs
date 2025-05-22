@@ -1,0 +1,96 @@
+<%- include('../header.ejs') %>
+
+<section class="section">
+  <div class="section-header">
+    <div>
+        <h2 class="section-title">Fotos de Drive</h2>
+        <div class="breadcrumb"><a href="/">Inicio</a> > <a href="/gmail">Gmail</a> > Fotos de Drive</div>
+    </div>
+    <div class="button-group">
+        <a href="/gmail" class="button">Volver a la lista</a>
+    </div>
+  </div>
+
+ 
+  <div class="breadcrumb">
+    <a href="/gmail/<%= contacto.id %>">Fotos</a> - 
+    <a href="/gmail/videos/<%= contacto.id %>">Videos</a> - 
+    <a href="/gmail/drive_fotos/<%= contacto.id %>">Drive Fotos</a> - 
+    <a href="/gmail/drive_videos/<%= contacto.id %>">Drive Videos</a>
+  </div></section>
+
+<style>
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  .photo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .photo-thumbnail {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border-radius: 4px;
+  }
+  .photo-name {
+    font-weight: bold;
+    margin-bottom: 8px;
+    word-break: break-word;
+  }
+  .photo-type {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .photo-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+  }
+</style>
+
+<% if (nextPageToken) { %>
+  <div>
+    <a href="/gmail/drive_fotos/<%= contacto.id %>/photos?pageToken=<%= nextPageToken %>">Siguiente página</a>
+  </div>
+<% } %>
+
+
+
+<div class="photo-grid">
+  <% if (photos && photos.length > 0) {
+    photos.forEach((photo) => { %>
+      <div class="photo-item">
+        <% if (photo.thumbnailLink) { %>
+          <img src="<%= photo.thumbnailLink %>" alt="<%= photo.name %>" class="photo-thumbnail">
+        <% } else { %>
+          <div class="photo-thumbnail" style="background-color: #ddd; display: flex; justify-content: center; align-items: center;">
+            No preview
+          </div>
+        <% } %>
+        <div class="photo-name"><%= photo.name %></div>
+        <div class="photo-type"><%= photo.mimeType %></div>
+        <a href="<%= photo.webViewLink %>" target="_blank" class="photo-link">Ver en Drive</a>
+      </div>
+    <% });
+  } else { %>
+    <p>No hay fotos disponibles.</p>
+  <% } %>
+</div>
+
+<% if (nextPageToken) { %>
+  <div>
+    <a href="/gmail/drive_fotos/<%= contacto.id %>/photos?pageToken=<%= nextPageToken %>">Siguiente página</a>
+  </div>
+<% } %>
+<%- include('../footer.ejs') %>

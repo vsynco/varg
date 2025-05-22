@@ -1,33 +1,39 @@
 function Authenticated(req, res, next) {
-  if (req.session && req.session.user) {
-    // Si el usuario está autenticado, continúa con la solicitud
-    return next();
+  try {
+    if (req.session && req.session.user) {
+      return next();
+    }
+    res.redirect("/");
+  } catch (error) {
+    res.redirect("/");
   }
-  req.session.redirectTo = req.originalUrl;
-  res.redirect("/invitacion");
 }
 
-async function Admin(req, res, next) {
-  const user = req.session.user;
-  if (user && user.administrador === 1) {
-    // Si el usuario está autenticado y es un administrador, continúa con la solicitud
-    return next();
-  }
-  // Si no es administrador o no está autenticado, redirige a la página principal
-  res.redirect("/");
-}
+function Admin(req, res, next) {
+  try {
+    // Verificar sesión y usuario
+    if (!req.session || !req.session.user) {
+      console.log('No hay sesión o usuario');
+      return res.redirect("/");
+    }
 
-async function Afiliado(req, res, next) {
-  const user = req.session.user.es_afiliado;
-  if (user === true) {
-    // Si el usuario está autenticado y es un administrador, continúa con la solicitud
-    return next();
+    // Comparar con 1 o simplemente usar el valor numérico
+    if (req.session.user.administrador === 1) {
+      return next();
+    }
+    // O simplemente
+    if (req.session.user.administrador) {
+      return next();
+    }
+
+    res.redirect("/");
+  } catch (error) {
+    console.error('Error en middleware Admin:', error);
+    res.redirect("/");
   }
-  res.redirect("/");
 }
 
 module.exports = {
   Authenticated,
   Admin,
-  Afiliado,
 };
