@@ -1,35 +1,229 @@
 <%- include('../header.ejs') %>
 
-<section class="section">
-  <div class="section-header">
-    <div>
-        <h2 class="section-title">Contactos Registrados con Gmail</h2>
-        <div class="breadcrumb"><a href="/">Inicio</a> > Contactos</div>
-    </div>
-  </div>
+<div class="full-width-container">
 
-  <div class="grid">
-     
-      <div class="card">
-          <% personas_naturales.forEach(function(pn) { %>
-            <a href="/gmail/<%= pn.id %>"><div class="list-item">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <strong><%= pn.nombre %><% if (pn.registrado) { %>🟢<% } %></strong>
-                      <span>ID: <%= pn.id %> / RUT: <%= pn.rut %></span>
-                  </div>
-                  <div class="subtitle">Correo: <%= pn.email %> / Teléfono: <%= pn.telefono %></div>
-                  <% if (pn.domicilio || pn.comuna || pn.region) { %>
-                      <div class="ultra-subtitle">
-                          <%= pn.domicilio ? pn.domicilio + ', ' : '' %>
-                          <%= pn.comuna ? pn.comuna + ', ' : '' %>
-                          <%= pn.region ? pn.region : '' %>
-                      </div>
-                  <% } %>
-              </div></a>
-          <% }) %>
+<style>
+  /* Romper el contenedor del header para ocupar todo el ancho */
+  .container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Contenedor principal que ocupa todo el ancho */
+  .full-width-container {
+    width: 99vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 10px 20px 20px 20px;
+    box-sizing: border-box;
+    background-color: #282a36;
+    min-height: 100vh;
+  }
+  
+  /* Navegación simplificada */
+  .simple-nav-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 10px 0;
+    margin: 0 0 20px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #f8f8f2;
+    border-bottom: 1px solid #6272a4;
+  }
+  
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .nav-left a {
+    color: #8be9fd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-left a:hover {
+    color: #f1fa8c;
+  }
+  
+  .page-title {
+    color: #f1fa8c;
+    font-weight: 400;
+    font-size: 14px;
+  }
+  
+  /* Grid de contactos */
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 16px;
+    padding: 0;
+    width: 100%;
+  }
+  
+  /* Responsive para pantallas más pequeñas */
+  @media (max-width: 900px) {
+    .contacts-grid {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .contacts-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+  
+  .contact-item {
+    background-color: #44475a;
+    border: 1px solid #6272a4;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .contact-item:hover {
+    border-color: #ff79c6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 121, 198, 0.15);
+  }
+  
+  .contact-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  
+  .contact-name {
+    color: #f1fa8c;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Fira Code', monospace;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .status-indicator {
+    color: #50fa7b;
+    font-size: 12px;
+  }
+  
+  .contact-ids {
+    color: #bd93f9;
+    font-size: 11px;
+    font-family: 'Fira Code', monospace;
+    text-align: right;
+    line-height: 1.3;
+  }
+  
+  .contact-email {
+    color: #8be9fd;
+    font-size: 13px;
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 4px;
+  }
+  
+  .contact-phone {
+    color: #ffb86c;
+    font-size: 12px;
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 8px;
+  }
+  
+  .contact-address {
+    color: #6272a4;
+    font-size: 11px;
+    font-family: 'Fira Code', monospace;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  
+  .no-contacts-message {
+    text-align: center;
+    color: #6272a4;
+    font-style: italic;
+    padding: 40px 20px;
+    background-color: #44475a;
+    border-radius: 8px;
+    border: 1px solid #6272a4;
+    grid-column: 1 / -1;
+    font-family: 'Fira Code', monospace;
+  }
+  
+  /* Efecto de hover en el contenido */
+  .contact-item:hover .contact-name {
+    color: #ff79c6;
+  }
+  
+  .contact-item:hover .contact-email {
+    color: #f1fa8c;
+  }
+</style>
+
+<div class="simple-nav-line">
+  <div class="nav-left">
+    <a href="/">← Inicio</a>
+    <div class="page-title">📧 Contactos Registrados con Gmail</div>
+  </div>
+</div>
+
+<div class="contacts-grid">
+  <% if (personas_naturales && personas_naturales.length > 0) { %>
+    <% personas_naturales.forEach(function(pn) { %>
+      <div class="contact-item">
+        <a href="/gmail/<%= pn.id %>">
+          <div class="contact-header">
+            <div class="contact-name">
+              <%= pn.nombre %>
+              <% if (pn.registrado) { %>
+                <span class="status-indicator">🟢</span>
+              <% } %>
+            </div>
+            <div class="contact-ids">
+              ID: <%= pn.id %><br>
+              RUT: <%= pn.rut %>
+            </div>
+          </div>
+          
+          <div class="contact-email">
+            📧 <%= pn.email %>
+          </div>
+          
+          <% if (pn.telefono) { %>
+            <div class="contact-phone">
+              📱 <%= pn.telefono %>
+            </div>
+          <% } %>
+          
+          <% if (pn.domicilio || pn.comuna || pn.region) { %>
+            <div class="contact-address">
+              📍 <%= pn.domicilio ? pn.domicilio + ', ' : '' %><%= pn.comuna ? pn.comuna + ', ' : '' %><%= pn.region ? pn.region : '' %>
+            </div>
+          <% } %>
+        </a>
       </div>
-  </div>
-</section>
+    <% }) %>
+  <% } else { %>
+    <div class="no-contacts-message">
+      <p>No hay contactos registrados disponibles.</p>
+    </div>
+  <% } %>
+</div>
 
+</div>
 
 <%- include('../footer.ejs') %>
