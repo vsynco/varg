@@ -449,23 +449,47 @@ async function iniciarAutenticacionGooglePhotos(req, res) {
 
 async function refreshAccessToken(refreshToken, clientId, clientSecret, userId) {
   try {
-    const oauth2Client = new google.auth.OAuth2(clientId, clientSecret);
-    oauth2Client.setCredentials({ refresh_token: refreshToken });
-    
-    const { tokens } = await oauth2Client.refreshAccessToken();
-    
-    // Actualizar el token en la base de datos
-    await accesosModel.actualizarAccessToken(userId, tokens.access_token);
-    
-    return tokens.access_token;
-  } catch (error) {
-    if (error.message.includes('invalid_grant')) {
-      throw new Error('REFRESH_TOKEN_EXPIRED');
+    // Verifica que todos los parámetros necesarios estén presentes
+    if (!refreshToken || !clientId || !clientSecret) {
+      throw new Error('Faltan parámetros necesarios para refrescar el token');
     }
+
+    const response = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        refresh_token: refreshToken,
+        grant_type: 'refresh_token'
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Respuesta de error al refrescar el token:', data);
+      
+      // Si el refresh token es inválido, redirigir a reautenticación
+      if (data.error === 'invalid_grant') {
+        console.error('Refresh token inválido o expirado para usuario:', userId);
+        throw new Error('REFRESH_TOKEN_EXPIRED');
+      }
+      
+      throw new Error(`Error al refrescar el token: ${data.error_description || data.error || 'Unknown error'}`);
+    }
+
+    const newAccessToken = data.access_token;
+
+    // Actualiza el nuevo access token en la base de datos
+    await accesosModel.actualizarAccessToken(userId, newAccessToken);
+
+    return newAccessToken;
+  } catch (error) {
+    console.error("Error detallado al refrescar el token de acceso:", error);
     throw error;
   }
 }
-
 
   module.exports = {
     mostrarPuig,
