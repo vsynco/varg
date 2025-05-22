@@ -51,9 +51,6 @@ router.get("/acceso", (req, res) => {
 router.get("/gmail/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarContactoNaturalConToken(req, res);});
 router.get("/gmail/videos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarVideos(req, res);});
 router.get("/gmail/drive/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarArchivosDrive(req, res);});
-router.get("/gmail/drive_fotos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarFotosDrive(req, res);});
-router.get("/gmail/drive_videos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarVideosDrive(req, res);});
-router.get("/gmail/drive_fotos/:id/photos", is.Authenticated, is.Admin, (req, res) => { accesosController.mostrarFotosDrive(req, res); });
 router.get("/gmail/", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarContactosGmail(req, res);});
 router.get("/google", accesosController.iniciarAutenticacionGoogle);
 router.get("/log", accesosController.iniciarAutenticacionGooglePhotos);

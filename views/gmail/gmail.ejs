@@ -1,98 +1,216 @@
 <%- include('../header.ejs') %>
 
-<section class="section">
-  <div class="section-header">
-    <div>
-      <h2 class="section-title">Fotos</h2>
-      <div class="breadcrumb"><a href="/">Inicio</a> > <a href="/gmail">Gmail</a> > Detalles</div>
-    </div>
-    <div class="button-group">
-      <a href="/gmail" class="button">Volver a la lista</a>
-    </div>
-  </div>
-
-  <div class="breadcrumb">
-    <a href="/gmail/<%= contacto.id %>">Fotos</a> - 
-    <a href="/gmail/videos/<%= contacto.id %>">Videos</a> - 
-    <a href="/gmail/drive_fotos/<%= contacto.id %>">Drive Fotos</a> - 
-    <a href="/gmail/drive_videos/<%= contacto.id %>">Drive Videos</a>
-  </div>
-</section>
+<div class="full-width-container">
 
 <style>
-  .media-grid {
+  /* Romper el contenedor del header para ocupar todo el ancho */
+  .container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Contenedor principal que ocupa todo el ancho */
+  .full-width-container {
+    width: 99vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 10px 20px 20px 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Navegación simplificada */
+  .simple-nav-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 10px 0;
+    margin: 0 0 20px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: #f8f8f2;
+    border-bottom: 1px solid #6272a4;
+  }
+  
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .nav-left a {
+    color: #8be9fd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-left a:hover {
+    color: #f1fa8c;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .nav-buttons a {
+    color: #bd93f9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-buttons a:hover {
+    color: #ff79c6;
+  }
+  
+  .nav-buttons a.active {
+    color: #50fa7b;
+  }
+  
+  .contact-summary {
+    color: #6272a4;
+    font-size: 11px;
+  }
+  
+  .contact-name {
+    color: #f1fa8c;
+    font-weight: 400;
+  }
+  
+  /* Grid de fotos */
+  .photos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-    padding: 5px;
-  }
-  .media-item {
-    position: relative;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 10px;
+    padding: 0;
     width: 100%;
-    padding-top: 100%; /* Mantiene un aspecto cuadrado */
-    overflow: hidden;
-    background-color: #f0f0f0;
-    border-radius: 8px;
   }
-
-  .media-item-video {
+  
+  /* Responsive para pantallas más pequeñas */
+  @media (max-width: 1200px) {
+    .photos-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .photos-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .photos-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .photos-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+  }
+  
+  .photo-item {
     position: relative;
-    width: 100%;
-    padding-top: 100%; /* Mantiene un aspecto cuadrado */
+    aspect-ratio: 1;
     overflow: hidden;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    border: 2px solid #ef9e60; 
+    border-radius: 6px;
+    border: 1px solid #6272a4;
+    transition: all 0.3s ease;
   }
-  .media-item-video img, .media-item-video video {
-    position: absolute;
-    top: 0;
-    left: 0;
+  
+  .photo-item:hover {
+    border-color: #ff79c6;
+    transform: scale(1.02);
+  }
+  
+  .video-item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 2px solid #f1fa8c;
+    transition: all 0.3s ease;
+  }
+  
+  .video-item:hover {
+    border-color: #ff79c6;
+    transform: scale(1.02);
+  }
+  
+  .photo-item img, .video-item img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Mantiene la relación de aspecto */
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
-  .media-item img, .media-item video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Mantiene la relación de aspecto */
+  
+  .photo-item:hover img, .video-item:hover img {
+    transform: scale(1.05);
   }
-  .media-date {
+  
+  .photo-date {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 4px 8px;
-    font-size: 12px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: #f8f8f2;
+    padding: 8px 4px 4px;
+    font-size: 10px;
     text-align: center;
+    font-family: 'Fira Code', monospace;
   }
-  .pagination a {
-    margin: 0 5px;
-    padding: 5px 10px;
-    text-decoration: none;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    background-color: #f9f9f9;
+  
+  .video-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(241, 250, 140, 0.9);
+    color: #282a36;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
   }
-  .pagination a.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
+  
+  .no-media-message {
+    text-align: center;
+    color: #6272a4;
+    font-style: italic;
+    padding: 40px 20px;
+    background-color: #44475a;
+    border-radius: 6px;
+    border: 1px solid #6272a4;
   }
 </style>
 
-<% if (nextPageToken) { %>
-  <div class="pagination">
-    <a href="/gmail/<%= contacto.id %>?pageToken=<%= nextPageToken %>">Siguiente página</a>
+<div class="simple-nav-line">
+  <div class="nav-left">
+    <a href="/gmail">← Volver a la lista</a>
+    <div class="nav-buttons">
+      <a href="/gmail/<%= contacto.id %>" class="active">📷 Fotos</a>
+      <a href="/gmail/videos/<%= contacto.id %>">🎥 Videos</a>
+    </div>
   </div>
-<% } %>
+  
+  <div class="contact-summary">
+    <span class="contact-name"><%= contacto.nombre %></span> • 
+    <%= contacto.email %> • 
+    ID: <%= contacto.id %>
+    <% if (nextPageToken) { %>
+      • <a href="/gmail/<%= contacto.id %>?pageToken=<%= nextPageToken %>" style="color: #8be9fd; text-decoration: none;">Página siguiente →</a>
+    <% } %>
+  </div>
+</div>
 
-<div class="media-grid">
+<div class="photos-grid">
   <% if (mediaItems && mediaItems.length > 0) {
     mediaItems.sort((a, b) => {
       const dateA = new Date(a.mediaMetadata.creationTime);
@@ -102,53 +220,35 @@
 
     mediaItems.forEach((mediaItem) => { %>
       <% if (mediaItem.mimeType && mediaItem.mimeType.startsWith('image/')) { %>
-      <div class="media-item">
+        <div class="photo-item">
           <a href="<%= mediaItem.maxQualityUrl %>" target="_blank" download>
-            <img src="<%= mediaItem.baseUrl %>" alt="Media" loading="lazy">
+            <img src="<%= mediaItem.baseUrl %>" alt="Foto" loading="lazy">
           </a>
-        <div class="media-date">
-          <%= new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(mediaItem.mediaMetadata.creationTime)) %>
+          <div class="photo-date">
+            <%= new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(mediaItem.mediaMetadata.creationTime)) %>
+          </div>
         </div>
-      </div>
-
       <% } %>
-
-
 
       <% if (mediaItem.mimeType && mediaItem.mimeType.startsWith('video/')) { %>
-      <div class="media-item-video">
-          <a href="<%= mediaItem.downloadUrl %>" target="_blank" class="xvideo" download >
-            <img src="<%= mediaItem.baseUrl %>" alt="Media" loading="lazy">
+        <div class="video-item">
+          <a href="<%= mediaItem.downloadUrl %>" target="_blank" download>
+            <img src="<%= mediaItem.baseUrl %>" alt="Video" loading="lazy">
           </a>
-        <div class="media-date">
-          <%= new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(mediaItem.mediaMetadata.creationTime)) %>
+          <div class="video-indicator">▶</div>
+          <div class="photo-date">
+            <%= new Intl.DateTimeFormat('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(mediaItem.mediaMetadata.creationTime)) %>
+          </div>
         </div>
-      </div>
       <% } %>
-
-
-
-
     <% });
   } else { %>
-    <p>No hay medios disponibles.</p>
+    <div class="no-media-message" style="grid-column: 1 / -1;">
+      <p>No hay fotos o videos disponibles en esta cuenta.</p>
+    </div>
   <% } %>
 </div>
 
-<% if (nextPageToken) { %>
-  <div class="pagination">
-    <a href="/gmail/<%= contacto.id %>?pageToken=<%= nextPageToken %>">Siguiente página</a>
-  </div>
-<% } %>
-
-<div class="grid">
-  <div class="card">
-    <div class="list-item">
-      <div><strong>ID:</strong> <%= contacto.id %></div>
-      <div><strong>Nombre:</strong> <%= contacto.nombre %> <% if (contacto.registrado) { %>🟢<% } %></div>
-      <div><strong>Email:</strong> <%= contacto.email %></div>
-      <div><strong>Teléfono:</strong> <%= contacto.telefono %></div>
-    </div>
-  </div>
 </div>
+
 <%- include('../footer.ejs') %>
