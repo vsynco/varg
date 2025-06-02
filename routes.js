@@ -46,21 +46,6 @@ router.get("/acceso", (req, res) => {
   }
 });
 
-
-
-router.get("/gmail/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarContactoNaturalConToken(req, res);});
-router.get("/gmail/videos/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarVideos(req, res);});
-router.get("/gmail/drive/:id", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarArchivosDrive(req, res);});
-router.get("/gmail/", is.Authenticated, is.Admin, (req, res) => {accesosController.mostrarContactosGmail(req, res);});
-router.get("/google", accesosController.iniciarAutenticacionGoogle);
-router.get("/log", accesosController.iniciarAutenticacionGooglePhotos);
-router.get("/google_callback", accesosController.manejarCallbackGoogle);
-router.get("/google_callbacks", accesosController.manejarCallbacksGoogle);
-
-
-
-
-
 // ACCESO
 router.post("/acceso", (req, res, next) => {
   personasController.iniciarSesion(req, res, next);
